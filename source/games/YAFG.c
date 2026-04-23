@@ -117,7 +117,7 @@ u32 YAUIBlue  = C2D_Color32(0x97, 0xB7, 0xC8, 0xAF);
             C2D_DrawRectSolid(40-7, 0+menuY,0, 200+14, 50+7, YAOL);
             C2D_DrawRectSolid(40, 0+menuY,0, 200, 50, YABlue);
             C2D_DrawRectSolid(0, 0+menuY,0, 500, 70, YAUIBlue);
-            YACTRText("Yet Another Flappy Game",50,20+menuY,.6f);
+            // YACTRText("Yet Another Flappy Game",50,20+menuY,.6f);
             
             int tabpos[3]={40,200,50};
             C3D_FrameEnd(0);

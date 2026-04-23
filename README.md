@@ -1,11 +1,9 @@
-# Yet Another Game Collection 3ds
+# Unbeatable 3ds
 
-that's right, i'm getting into 3ds homebrew
+illigal music coming to your 3ds
 
 ## running the game
-1. get an emulator or a real 3ds with cfw
-
-    1.1. for an emulator, i would recommend [azahar](https://github.com/azahar-emu/azahar) as it is the newest fork combining progress from 2 of the largest forks
+1. get a 3ds with cfw
 
 2. download the game
 
@@ -31,19 +29,3 @@ that's right, i'm getting into 3ds homebrew
 
     3.2. on an emulator, you can just open the file like any other game
 
-# KNOWN ISSUES:
--- fixed in next release-- cannot exit game for some reason, will try to figure out at somepoint, to leave the game, you can fully restart your 3ds
-
-## planned features
-
-[Yet Another Collectathon] : not yet
-
-[Yet Another Flappy Game] : complete, may get a few patches later
-
-[Yet Another Bouncer] : not yet
-
-[Yet Another Idle Game] : not sure
-
-[Yet Another Twin Stick Shooter] : not sure
-
-[Yet Another 2d Platformer] : absolutly not

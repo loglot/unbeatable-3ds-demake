@@ -11,13 +11,15 @@ C2D_TextBuf g_staticBuf;
 float scaleX = 1;
 float scaleY = 1;
 
-void YACTRText(char input[100], float x, float y, float size){
+void YACTRText(char input[30], float x, float y, float size,u32 color){
 
 		g_staticBuf  = C2D_TextBufNew(4096);
 		font = C2D_FontLoadSystem(CFG_REGION_USA);
 		C2D_TextFontParse(&Text, font, g_staticBuf, input);
 		C2D_TextOptimize(&Text);
-		C2D_DrawText(&Text, 0, x, y, 0.5f, size, size);
+		
+		// enum test C2D_WithColor = 1
+		C2D_DrawText(&Text, 1, x, y, 0.5f, size, size);
         C2D_TextBufDelete(g_staticBuf);
         C2D_FontFree(font);
 }
