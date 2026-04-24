@@ -10,7 +10,6 @@
 
 
 
-
 #define SCREEN_WIDTH  400
 #define SCREEN_HEIGHT 240
 
@@ -40,7 +39,36 @@ int state=0;
 #include "./general-utills/utillities.c"
 #include "./games/unbeat.c"
 #include "./general-utills/previews.c"
+char indexs[10];
+char mode[30];
+fsInit();
+FILE *file = fopen("sdmc:/UNBEATABLE/songs.txt", "r");
+char line[128];
+		while (fgets(line, sizeof(line), file) != NULL) {
+			printf("File content: %s\n", line);
+			if(line[0]=='['){
+				// index++;
+				// indexs=line[0];
+				if(line[1] == 'M'){
+					strcpy(mode,"Meta");
+				}else{
+					strcpy(mode,"UNDEFINED!!!");
+				}
+			}else{
+				if (strcmp(mode,"Meta")==0){
+					index++;
+					char* split=strtok(line,":");
 
+					while(split != NULL)
+					{
+						word=split;
+						split=strtok(NULL," ");
+					}
+				}
+			}
+
+		}
+		sprintf(indexs, "%d", index);
 // C2D_Text Text[2];
 // C2D_Font font;
 // C2D_TextBuf g_staticBuf;
@@ -80,6 +108,7 @@ int state=0;
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(top);
         C2D_TargetClear(top, YABlue);
+		YACTRText(indexs,100, 50,1,UI);
         C3D_FrameEnd(0);
 	}
 	void draw(){
@@ -123,5 +152,6 @@ while (aptMainLoop())
 	C2D_Fini();
 	C3D_Fini();
 	gfxExit();
+	fsExit();
 	return 0;
 }

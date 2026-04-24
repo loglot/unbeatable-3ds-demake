@@ -16,8 +16,7 @@ void rgDrawBottom(){
     C2D_SceneBegin(bottom);
     C2D_TargetClear(bottom, white);
     // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
-    YACTRText("BEATABLE!",80, 145,1,UI);
-    YACTRText("don't Press A!",100, 175,1,UI);
+    YACTRText("rhythm game test zone",80, 145,1,UI);
     C3D_FrameEnd(0);
 }
 void rgDrawTop(){
@@ -32,7 +31,7 @@ void rgDrawTop(){
     C2D_DrawCircleSolid(250, 140, 0, 15, white);
     C2D_DrawCircleSolid(200, beatposy, 0, 20, white);
 	u32 kDown = hidKeysDown();
-	if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) 
+	if (kDown & (KEY_A | KEY_B | KEY_X | KEY_Y)) 
     {
         beatposy=80;
         beatvely=-5;
@@ -45,7 +44,7 @@ void rgDrawTop(){
             beatposy=140;
         }
     }
-	if (kDown & KEY_LEFT/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) 
+	if (kDown & (KEY_LEFT | KEY_RIGHT | KEY_DOWN | KEY_UP)) 
     {
         beatposy=140;
         // beatvely=-5;
