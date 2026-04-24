@@ -57,13 +57,13 @@ char line[128];
 			}else{
 				if (strcmp(mode,"Meta")==0){
 					index++;
-					char* split=strtok(line,":");
+					// char* split=strtok(line,":");
 
-					while(split != NULL)
-					{
-						word=split;
-						split=strtok(NULL," ");
-					}
+					// while(split != NULL)
+					// {
+					// 	// word=split;
+					// 	// split=strtok(NULL," ");
+					// }
 				}
 			}
 
