@@ -1,2 +1,6 @@
-
-unbeatable-3ds-de*
+/build/*
+/unbeatable*
+/UNBEATABLE*
+cxitool
+build
+makerom

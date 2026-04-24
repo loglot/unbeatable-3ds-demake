@@ -28,7 +28,7 @@ C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 u32 YAGreen   = C2D_Color32(0xAF, 0xBF, 0xAF, 0xFF);
 u32 UI  = C2D_Color32(0x00, 0x00, 0x00, 0x5F);
 u32 YABlue  = C2D_Color32(0xA7, 0xC7, 0xD8, 0xFF);
-u32 white  = C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF);
+u32 white  = C2D_Color32(0xAF, 0xAF, 0xAF, 0xFF);
 u32 YAOL   = C2D_Color32(0x33, 0x36, 0x3F, 0xFF);
 u32 YAShadow   = C2D_Color32(0x33, 0x36, 0x3F, 0x5F);
 float targetScale=.8;
@@ -36,11 +36,10 @@ int animation=-1;
 float scale=0;
 int index = 0;
 int pos=0;
-
-#include "./general-utills/utillities.c"
-// #include "./games/YAFG.c"
-#include "./general-utills/previews.c"
 int state=0;
+#include "./general-utills/utillities.c"
+#include "./games/unbeat.c"
+#include "./general-utills/previews.c"
 
 // C2D_Text Text[2];
 // C2D_Font font;
@@ -73,6 +72,7 @@ int state=0;
         C2D_TargetClear(bottom, white);
         // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
 		YACTRText("UNBEATABLE!",80, 145,1,UI);
+		YACTRText("Press A!",100, 175,1,UI);
         C3D_FrameEnd(0);
 	}
     void drawTop(){
@@ -93,12 +93,13 @@ int state=0;
 		hidTouchRead(&touch);
 
 		u32 kDown = hidKeysDown();
-		// if (kDown & KEY_A||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)) {animation=0;}
+		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {state=1;}
 		// if (kDown & KEY_DLEFT  ||(touch.px<20&&touch.px>3))  {index--;}
 		// if (kDown & KEY_DRIGHT ||(touch.px>300)) {index++;}
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(top);
 	}
+	
 while (aptMainLoop())
 {
     	hidScanInput();			
@@ -108,8 +109,12 @@ while (aptMainLoop())
 			state=1;
 		}
 		if(state==2) break;
-		draw();
-        tick();
+		if(state==0){
+			draw();
+	        tick();
+		}else if (state==1){
+			rgTick();
+		}
 	// printf("\x1b[1;1HPress A to Start YAFG  ");
 	// printf("\x1b[2;1HCPU:     %6.2f%%\x1b[K", C3D_GetProcessingTime()*6.0f);
 }
