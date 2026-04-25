@@ -19,6 +19,7 @@ int main(int argc, char* argv[]) {
 //---------------------------------------------------------------------------------
 
 gfxInitDefault();
+// consoleInit(GFX_BOTTOM, NULL);
 C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
 C2D_Prepare();
@@ -36,16 +37,21 @@ float scale=0;
 int index = 0;
 int pos=0;
 int state=0;
+struct song {
+	char title[20];
+	char author[20];
+};
+struct song songs[50];
 #include "./general-utills/utillities.c"
 #include "./games/unbeat.c"
 #include "./general-utills/previews.c"
-char indexs[10];
+char indexs[15];
 char mode[30];
 fsInit();
 FILE *file = fopen("sdmc:/UNBEATABLE/songs.txt", "r");
 char line[128];
 		while (fgets(line, sizeof(line), file) != NULL) {
-			printf("File content: %s\n", line);
+			// printf("File content: %s\n", line);
 			if(line[0]=='['){
 				// index++;
 				// indexs=line[0];
@@ -56,14 +62,28 @@ char line[128];
 				}
 			}else{
 				if (strcmp(mode,"Meta")==0){
-					index++;
-					// char* split=strtok(line,":");
-
-					// while(split != NULL)
-					// {
-					// 	// word=split;
-					// 	// split=strtok(NULL," ");
-					// }
+					// index++;
+					char* split=strtok(line,":");
+					char statew[20];
+					strcpy(statew,"null");
+					while(split != NULL)
+					{
+						char* word=split;
+						if(strcmp(statew,"null")==0){
+							if(strcmp(word,"Title")==0){
+								strcpy(statew,"Title");
+								// printf(word);
+							}
+						}else{
+							if(strcmp(statew,"Title")==0){
+								index+=1;
+								// printf(word);
+							}
+						}
+						
+						// printf(word);
+						split=strtok(NULL," ");
+					}
 				}
 			}
 
