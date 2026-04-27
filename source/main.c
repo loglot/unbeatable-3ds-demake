@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 //---------------------------------------------------------------------------------
 
 gfxInitDefault();
-// consoleInit(GFX_BOTTOM, NULL);
+consoleInit(GFX_BOTTOM, NULL);
 C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
 C2D_Prepare();
@@ -40,6 +40,7 @@ int state=0;
 struct song {
 	char title[20];
 	char author[20];
+	char artist[20];
 };
 struct song songs[50];
 #include "./general-utills/utillities.c"
@@ -74,11 +75,31 @@ char line[128];
 								strcpy(statew,"Title");
 								// printf(word);
 							}
+							if(strcmp(word,"Artist")==0){
+								strcpy(statew,"Artist");
+								// printf(word);
+							}
+							if(strcmp(word,"Creator")==0){
+								strcpy(statew,"Author");
+								// printf(word);
+							}
 						}else{
 							if(strcmp(statew,"Title")==0){
 								index+=1;
-								// printf(word);
+								strcpy(songs[0].title,word);
+								printf(word);
 							}
+							if(strcmp(statew,"Artist")==0){
+								index+=1;
+								strcpy(songs[0].artist,word);
+								printf(word);
+							}
+							if(strcmp(statew,"Author")==0){
+								index+=1;
+								strcpy(songs[0].author,word);
+								printf(word);
+							}
+							strcpy(statew,"null");
 						}
 						
 						// printf(word);
@@ -88,6 +109,7 @@ char line[128];
 			}
 
 		}
+								//printf(songs);
 		sprintf(indexs, "%d", index);
 // C2D_Text Text[2];
 // C2D_Font font;
@@ -132,7 +154,7 @@ char line[128];
         C3D_FrameEnd(0);
 	}
 	void draw(){
-		drawBottom();
+		// drawBottom();
 		drawTop();
 	}
 	void tick(){
