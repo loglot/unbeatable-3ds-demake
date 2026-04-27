@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 //---------------------------------------------------------------------------------
 
 gfxInitDefault();
-consoleInit(GFX_BOTTOM, NULL);
+// consoleInit(GFX_BOTTOM, NULL);
 C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
 C2D_Prepare();
@@ -84,10 +84,10 @@ printSong(songs[0]);
 		
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(bottom);
-        C2D_TargetClear(bottom, white);
+        C2D_TargetClear(bottom, offwhite);
         // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
-		YACTRText("UNBEATABLE!",80, 145,1,UI);
-		YACTRText("Press A!",100, 175,1,UI);
+		YACTRText("UNBEATABLE!",80, 145,1,beatred);
+		YACTRText("Press A!",100, 175,1,beatred);
         C3D_FrameEnd(0);
 	}
     void drawTop(){
@@ -99,7 +99,7 @@ printSong(songs[0]);
         C3D_FrameEnd(0);
 	}
 	void draw(){
-		// drawBottom();
+		drawBottom();
 		drawTop();
 	}
 	void tick(){
