@@ -39,17 +39,17 @@ struct song parseSong(char *songPath){
                         if(strcmp(statew,"Title")==0){
                             index+=1;
                             strcpy(parsing.title,word);
-                            printf(word);
+                            // printf(word);
                         }
                         if(strcmp(statew,"Artist")==0){
                             index+=1;
                             strcpy(parsing.artist,word);
-                            printf(word);
+                            // printf(word);
                         }
                         if(strcmp(statew,"Author")==0){
                             index+=1;
                             strcpy(parsing.author,word);
-                            printf(word);
+                            // printf(word);
                         }
                         strcpy(statew,"null");
                     }
@@ -64,4 +64,23 @@ struct song parseSong(char *songPath){
                             //printf(songs);
     sprintf(indexs, "%d", index);
     return (parsing);
+}
+
+
+void printSong(struct song s){
+    printf("\n --- \n\n");
+    
+    char temp[50];
+    strcpy(temp, "Title : ");
+    strcat(temp,s.title);
+    printf(temp);
+
+    strcpy(temp, "Artist : ");
+    strcat(temp,s.artist);
+    printf(temp);
+    
+    strcpy(temp, "Charted By : ");
+    strcat(temp,s.author);
+    printf(temp);
+
 }

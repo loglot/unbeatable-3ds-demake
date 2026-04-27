@@ -51,7 +51,9 @@ struct song songs[50];
 fsInit();
 
 songs[0] = parseSong("sdmc:/UNBEATABLE/songs.txt");
-
+printSong(songs[0]);
+printSong(songs[0]);
+printSong(songs[0]);
 // C2D_Text Text[2];
 // C2D_Font font;
 // C2D_TextBuf g_staticBuf;
