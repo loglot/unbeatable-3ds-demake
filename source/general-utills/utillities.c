@@ -19,7 +19,7 @@ void YACTRText(char input[30], float x, float y, float size,u32 color){
 		C2D_TextOptimize(&Text);
 		
 		// enum test C2D_WithColor = 1
-		C2D_DrawText(&Text, 1, x, y, 0.5f, size, size);
+		C2D_DrawText(&Text, C2D_WithColor, x, y, 0.5f, size, size,color);
         C2D_TextBufDelete(g_staticBuf);
         C2D_FontFree(font);
 }

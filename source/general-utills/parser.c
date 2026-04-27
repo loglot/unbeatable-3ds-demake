@@ -36,6 +36,7 @@ struct song parseSong(char *songPath){
                             // printf(word);
                         }
                     }else{
+                        // word[strcspn(word, "\n")]=0;
                         if(strcmp(statew,"Title")==0){
                             index+=1;
                             strcpy(parsing.title,word);

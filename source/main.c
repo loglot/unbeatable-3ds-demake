@@ -29,6 +29,8 @@ u32 YAGreen   = C2D_Color32(0xAF, 0xBF, 0xAF, 0xFF);
 u32 UI  = C2D_Color32(0x00, 0x00, 0x00, 0x5F);
 u32 YABlue  = C2D_Color32(0xA7, 0xC7, 0xD8, 0xFF);
 u32 white  = C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF);
+u32 offwhite  = C2D_Color32(0xF7, 0xF7, 0xD8, 0xFF);
+u32 beatred  = C2D_Color32(0xEB, 0x5A, 0x7F, 0xFF);
 u32 YAOL   = C2D_Color32(0x33, 0x36, 0x3F, 0xFF);
 u32 YAShadow   = C2D_Color32(0x33, 0x36, 0x3F, 0x5F);
 float targetScale=.8;
@@ -92,8 +94,8 @@ printSong(songs[0]);
 		
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(top);
-        C2D_TargetClear(top, YABlue);
-		YACTRText(indexs,100, 50,1,UI);
+        C2D_TargetClear(top, offwhite);
+		YACTRText(songs[0].title,100, 50,1,beatred);
         C3D_FrameEnd(0);
 	}
 	void draw(){
