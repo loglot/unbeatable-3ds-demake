@@ -43,74 +43,15 @@ struct song {
 	char artist[20];
 };
 struct song songs[50];
+    char indexs[15];
 #include "./general-utills/utillities.c"
 #include "./games/unbeat.c"
 #include "./general-utills/previews.c"
-char indexs[15];
-char mode[30];
+#include "./general-utills/parser.c"
 fsInit();
-FILE *file = fopen("sdmc:/UNBEATABLE/songs.txt", "r");
-char line[128];
-		while (fgets(line, sizeof(line), file) != NULL) {
-			// printf("File content: %s\n", line);
-			if(line[0]=='['){
-				// index++;
-				// indexs=line[0];
-				if(line[1] == 'M'){
-					strcpy(mode,"Meta");
-				}else{
-					strcpy(mode,"UNDEFINED!!!");
-				}
-			}else{
-				if (strcmp(mode,"Meta")==0){
-					// index++;
-					char* split=strtok(line,":");
-					char statew[20];
-					strcpy(statew,"null");
-					while(split != NULL)
-					{
-						char* word=split;
-						if(strcmp(statew,"null")==0){
-							if(strcmp(word,"Title")==0){
-								strcpy(statew,"Title");
-								// printf(word);
-							}
-							if(strcmp(word,"Artist")==0){
-								strcpy(statew,"Artist");
-								// printf(word);
-							}
-							if(strcmp(word,"Creator")==0){
-								strcpy(statew,"Author");
-								// printf(word);
-							}
-						}else{
-							if(strcmp(statew,"Title")==0){
-								index+=1;
-								strcpy(songs[0].title,word);
-								printf(word);
-							}
-							if(strcmp(statew,"Artist")==0){
-								index+=1;
-								strcpy(songs[0].artist,word);
-								printf(word);
-							}
-							if(strcmp(statew,"Author")==0){
-								index+=1;
-								strcpy(songs[0].author,word);
-								printf(word);
-							}
-							strcpy(statew,"null");
-						}
-						
-						// printf(word);
-						split=strtok(NULL," ");
-					}
-				}
-			}
 
-		}
-								//printf(songs);
-		sprintf(indexs, "%d", index);
+songs[0] = parseSong("sdmc:/UNBEATABLE/songs.txt");
+
 // C2D_Text Text[2];
 // C2D_Font font;
 // C2D_TextBuf g_staticBuf;
