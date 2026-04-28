@@ -65,6 +65,7 @@ struct song parseSong(char *songPath){
                             // printf(word);
                         }
                     }else{
+                        
                         // word[strcspn(word, "\n")]=0;
                         if(strcmp(statew,"Title")==0){
                             index+=1;
@@ -83,9 +84,8 @@ struct song parseSong(char *songPath){
                         }
                         strcpy(statew,"null");
                     }
-                    
                     // printf(word);
-                    split=strtok(NULL," ");
+                    split=strtok(NULL,"");
                 }
             }
         }
