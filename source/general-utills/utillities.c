@@ -11,17 +11,41 @@ C2D_TextBuf g_staticBuf;
 float scaleX = 1;
 float scaleY = 1;
 
-void YACTRText(char input[30], float x, float y, float size,u32 color){
-
+void textSetup(u32 fon, char input[30]){
 		g_staticBuf  = C2D_TextBufNew(4096);
-		font = C2D_FontLoadSystem(CFG_REGION_USA);
+		font = C2D_FontLoadSystem(fon);
 		C2D_TextFontParse(&Text, font, g_staticBuf, input);
 		C2D_TextOptimize(&Text);
-		
-		// enum test C2D_WithColor = 1
-		C2D_DrawText(&Text, C2D_WithColor, x, y, 0.5f, size, size,color);
+
+}
+void textEnd(){
+
         C2D_TextBufDelete(g_staticBuf);
         C2D_FontFree(font);
+}
+void YACTRText(char input[30], float x, float y, float size,u32 color){
+
+		textSetup(CFG_REGION_USA, input);
+		C2D_DrawText(&Text, C2D_WithColor, x, y, 0.5f, size, size,color);
+		textEnd();
+}
+void YACTRTextRight(char input[30], float x, float y, float size,u32 color){
+
+		textSetup(CFG_REGION_USA, input);
+		C2D_DrawText(&Text, C2D_WithColor|C2D_AlignRight, x, y, .5, size, size,color);
+		textEnd();
+}
+void YACTRTextRightCusDep(char input[30], float x, float y, float size,u32 color, float depth){
+
+		textSetup(CFG_REGION_USA, input);
+		C2D_DrawText(&Text, C2D_WithColor|C2D_AlignRight, x, y, depth, size, size,color);
+		textEnd();
+}
+void YACTRTextRightSqu(char input[30], float x, float y, float size,float sizet,u32 color){
+
+		textSetup(CFG_REGION_USA, input);
+		C2D_DrawText(&Text, C2D_WithColor|C2D_AlignRight, x, y, 0.5f, size, sizet,color);
+		textEnd();
 }
 void DrawRect(int x, int y, int width, int height, u32 color, int depth){
 	C2D_DrawRectSolid(x*scaleX, y*scaleY, depth, width*scaleX, height*scaleY, color);

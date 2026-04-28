@@ -31,6 +31,7 @@ u32 YABlue  = C2D_Color32(0xA7, 0xC7, 0xD8, 0xFF);
 u32 white  = C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF);
 u32 offwhite  = C2D_Color32(0xF7, 0xF7, 0xD8, 0xFF);
 u32 beatred  = C2D_Color32(0xEB, 0x5A, 0x7F, 0xFF);
+u32 offgrey  = C2D_Color32(0xE0, 0xDE, 0xC9, 0xFF);
 u32 YAOL   = C2D_Color32(0x33, 0x36, 0x3F, 0xFF);
 u32 YAShadow   = C2D_Color32(0x33, 0x36, 0x3F, 0x5F);
 float targetScale=.8;
@@ -43,6 +44,7 @@ struct song {
 	char title[20];
 	char author[20];
 	char artist[20];
+	char audio[20];
 };
 struct song songs[50];
     char indexs[15];
@@ -90,12 +92,49 @@ printSong(songs[0]);
 		YACTRText("Press A!",100, 175,1,beatred);
         C3D_FrameEnd(0);
 	}
+	void drawSong(int x,int y, struct song s){
+		char temp[50];
+		strcpy(temp, "// ");
+		strcat(temp,s.title);
+		YACTRText(temp,x, y+5,.7,beatred);
+		YACTRTextRight("10",x-5, y,1,beatred);
+		YACTRTextRight("10",x-5, y+1,1,beatred);
+		YACTRTextRight("10",x-5, y-1,1,beatred);
+		YACTRTextRight("10",x-6, y,1,beatred);
+		YACTRTextRight("10",x-4, y,1,beatred);
+		YACTRTextRightSqu("LV",x-4, y-5,.5,.3,beatred);
+		YACTRTextRightSqu("LV",x-5, y-5,.5,.3,beatred);
+		YACTRTextRightSqu("LV",x-4, y-6,.5,.3,beatred);
+
+		// strcpy(temp, "By: ");
+		// strcat(temp,s.artist);
+		// YACTRText(temp,x+15, y+30,.5,beatred);
+
+	}
+	void drawCurSong(struct song s){
+
+		YACTRTextRightCusDep("Charted By:", SCREEN_WIDTH-5, SCREEN_HEIGHT-35,.5,offwhite,1);
+		YACTRTextRightCusDep(s.author, SCREEN_WIDTH-5, SCREEN_HEIGHT-20,.5,offwhite,1);
+		// YACTRText(s.audio, 5, SCREEN_HEIGHT-20,.5,beatred);
+	}
     void drawTop(){
 		
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(top);
         C2D_TargetClear(top, offwhite);
-		YACTRText(songs[0].title,100, 50,1,beatred);
+		YACTRTextRightSqu("SONG", SCREEN_WIDTH-5, -30,3,2,offgrey);
+		YACTRTextRightSqu("SELECT", SCREEN_WIDTH-100, SCREEN_HEIGHT-35,3,2,offgrey);
+		drawSong(50,50, songs[0]);		
+		drawSong(50,50+50*1, songs[0]);		
+		drawSong(50,50+50*2, songs[0]);		
+		drawSong(50,50+50*3, songs[0]);		
+		drawSong(50,50+50*4, songs[0]);		
+		drawSong(50,50-50*1, songs[0]);		
+		C2D_DrawTriangle(
+			SCREEN_WIDTH-150, SCREEN_HEIGHT, beatred, 
+			SCREEN_WIDTH,  SCREEN_HEIGHT, beatred,
+			SCREEN_WIDTH, SCREEN_HEIGHT-150, beatred, .6);
+		drawCurSong(songs[0]);		
         C3D_FrameEnd(0);
 	}
 	void draw(){

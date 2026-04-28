@@ -10,10 +10,39 @@ struct song parseSong(char *songPath){
             // indexs=line[0];
             if(line[1] == 'M'){
                 strcpy(mode,"Meta");
+            }else if(line[1] == 'G'){
+                strcpy(mode,"Gen");
             }else{
                 strcpy(mode,"UNDEFINED!!!");
             }
         }else{
+            if (strcmp(mode,"Gen")==0){
+                char* split=strtok(line,":");
+                char statew[20];
+                strcpy(statew,"null");
+                while(split != NULL)
+                {
+                    char* word=split;
+                    if(strcmp(statew,"null")==0){
+                        if(strcmp(word,"AudioFilename")==0){
+                            strcpy(statew,"File");
+                            // printf(word);
+                        }
+                    }else{
+                        // word[strcspn(word, "\n")]=0;
+                        if(strcmp(statew,"File")==0){
+                            index+=1;
+                            strcpy(parsing.audio,word);
+                            // printf(word);
+                        }
+                        strcpy(statew,"null");
+                    }
+                    
+                    // printf(word);
+                    split=strtok(NULL," ");
+                }
+             
+            }
             if (strcmp(mode,"Meta")==0){
                 // index++;
                 char* split=strtok(line,":");
