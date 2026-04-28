@@ -47,6 +47,12 @@ void YACTRTextRightSqu(char input[30], float x, float y, float size,float sizet,
 		C2D_DrawText(&Text, C2D_WithColor|C2D_AlignRight, x, y, 0.5f, size, sizet,color);
 		textEnd();
 }
+void betterText(char input[30],u32 flags, float x, float y, float d, float size,float sizet,u32 color){
+
+		textSetup(CFG_REGION_USA, input);
+		C2D_DrawText(&Text, C2D_WithColor|flags, x, y, d, size, sizet,color);
+		textEnd();
+}
 void DrawRect(int x, int y, int width, int height, u32 color, int depth){
 	C2D_DrawRectSolid(x*scaleX, y*scaleY, depth, width*scaleX, height*scaleY, color);
 }

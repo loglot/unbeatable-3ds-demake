@@ -81,17 +81,6 @@ printSong(songs[0]);
 	
 	// consoleInit(GFX_BOTTOM, NULL);
 	int time=0;
-
-    void drawBottom(){
-		
-        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-        C2D_SceneBegin(bottom);
-        C2D_TargetClear(bottom, offwhite);
-        // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
-		YACTRText("UNBEATABLE!",80, 145,1,beatred);
-		YACTRText("Press A!",100, 175,1,beatred);
-        C3D_FrameEnd(0);
-	}
 	void drawSong(int x,int y, struct song s){
 		char temp[50];
 		strcpy(temp, "// ");
@@ -110,6 +99,34 @@ printSong(songs[0]);
 		// strcat(temp,s.artist);
 		// YACTRText(temp,x+15, y+30,.5,beatred);
 
+	}
+
+    void drawBottom(){
+		
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+        C2D_SceneBegin(bottom);
+        C2D_TargetClear(bottom, offwhite);
+        // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
+		C2D_DrawTriangle(
+			190, 0, beatred, 
+			190,  190, beatred,
+			0, 190, beatred, .6);
+		C2D_DrawRectangle(
+			190, 0, .6, 
+			300,  300, beatred, beatred,beatred,beatred );
+		C2D_DrawRectangle(
+			0, 190, .6, 
+			300,  300, beatred, beatred,beatred,beatred );
+		drawSong(10,50+50*1, songs[0]);		
+		drawSong(10,50+50*2, songs[0]);		
+		drawSong(10,50+50*3, songs[0]);		
+		drawSong(10,50+50*0, songs[0]);		
+		drawSong(10,50-50*1, songs[0]);		
+		betterText("UNBEATABLE!",1,80, 175,.7,1,1,offwhite);
+		betterText("Press A!",1,100, 205,.7,1,1,offwhite);
+		// YACTRText("UNBEATABLE!",80, 145,1,offwhite);
+		// YACTRText("Press A!",100, 175,1,offwhite);
+        C3D_FrameEnd(0);
 	}
 	void drawCurSong(struct song s){
 
