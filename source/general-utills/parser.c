@@ -39,7 +39,7 @@ struct song parseSong(char *songPath){
                     }
                     
                     // printf(word);
-                    split=strtok(NULL," ");
+                    split=strtok(NULL,"\r\n");
                 }
              
             }
@@ -85,7 +85,7 @@ struct song parseSong(char *songPath){
                         strcpy(statew,"null");
                     }
                     // printf(word);
-                    split=strtok(NULL,"");
+                    split=strtok(NULL,"\r\n");
                 }
             }
         }
