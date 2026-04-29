@@ -48,6 +48,9 @@ struct song {
 	char artist[20];
 	char audio[20];
 	char difficulty[20];
+	char tags[50];
+	char flavor[50];
+	char level[4];
 };
 struct song songs[50];
     char indexs[15];
@@ -105,11 +108,11 @@ printSong(songs[0]);
 
 
 
-		YACTRTextRight("10",x-5, y,1,beatred);
-		YACTRTextRight("10",x-5, y+1,1,beatred);
-		YACTRTextRight("10",x-5, y-1,1,beatred);
-		YACTRTextRight("10",x-6, y,1,beatred);
-		YACTRTextRight("10",x-4, y,1,beatred);
+		YACTRTextRight(s.level,x-5, y,1,beatred);
+		YACTRTextRight(s.level,x-5, y+1,1,beatred);
+		YACTRTextRight(s.level,x-5, y-1,1,beatred);
+		YACTRTextRight(s.level,x-6, y,1,beatred);
+		YACTRTextRight(s.level,x-4, y,1,beatred);
 		YACTRTextRightSqu("LV",x-4, y-5,.5,.3,beatred);
 		YACTRTextRightSqu("LV",x-5, y-5,.5,.3,beatred);
 		YACTRTextRightSqu("LV",x-4, y-6,.5,.3,beatred);
@@ -152,7 +155,12 @@ printSong(songs[0]);
 
 		YACTRTextRightCusDep("Charted By:", SCREEN_WIDTH-5, SCREEN_HEIGHT-35,.5,offwhite,1);
 		YACTRTextRightCusDep(s.author, SCREEN_WIDTH-5, SCREEN_HEIGHT-20,.5,offwhite,1);
+		YACTRTextRightCusDep(s.tags, SCREEN_WIDTH-10, 70,.5,beatred,1);
+		YACTRTextRightCusDep(s.flavor, SCREEN_WIDTH-10, 25,.5,offgrey,1);
 		// YACTRText(s.audio, 5, SCREEN_HEIGHT-20,.5,beatred);
+		C2D_DrawRectangle(
+			200, 50, .2, 
+			150,  150,supportcolor, supportcolor,supportcolor,supportcolor);
 	}
     void drawTop(){
 		

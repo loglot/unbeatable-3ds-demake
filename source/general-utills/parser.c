@@ -24,22 +24,15 @@ struct song parseSong(char *songPath){
                 {
                     char* word=split;
                     if(strcmp(statew,"null")==0){
+                        split=strtok(NULL,"\r\n");
                         if(strcmp(word,"AudioFilename")==0){
-                            strcpy(statew,"File");
+                            strcpy(parsing.audio,split);
                             // printf(word);
                         }
-                    }else{
-                        // word[strcspn(word, "\n")]=0;
-                        if(strcmp(statew,"File")==0){
-                            index+=1;
-                            strcpy(parsing.audio,word);
-                            // printf(word);
-                        }
-                        strcpy(statew,"null");
                     }
+                    split=strtok(NULL,"\r\n");
                     
                     // printf(word);
-                    split=strtok(NULL,"\r\n");
                 }
              
             }
@@ -64,6 +57,28 @@ struct song parseSong(char *songPath){
                         }
                         if(strcmp(word,"Version")==0){
                             strcpy(parsing.difficulty,split);
+                        }
+                        if(strcmp(word,"Tags")==0){
+                            char *tags;
+                            char *heads;
+                            char *tag=strtok_r(split, ",",&tags);
+                            while(tag != NULL){
+                                char *head=strtok_r(tag,":",&heads);
+
+                                if(strcmp(head, "{\"Level\"")==0){
+                                    tag=strtok_r(NULL,"\r\n",&heads);
+
+                                    strcpy(parsing.level,tag);
+                                }
+                                if(strcmp(head, " \"FlavorText\"")==0||strcmp(head, "\"FlavorText\"")==0){
+                                    tag=strtok_r(NULL,"\r\n",&heads);
+
+                                    // strcpy(parsing.level,tag);
+                                    strcpy(parsing.flavor,tag);
+                                }
+                                tag=strtok_r(NULL,",",&tags);
+                            
+                            }    
                         }
                     }
                             split=strtok(NULL,"\r\n");
