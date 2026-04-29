@@ -10,8 +10,9 @@
 
 
 
-#define SCREEN_WIDTH  400
-#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH   400
+#define SCREEN_WIDTH_B 320
+#define SCREEN_HEIGHT  240
 
 
 //---------------------------------------------------------------------------------
@@ -31,6 +32,7 @@ u32 YABlue  = C2D_Color32(0xA7, 0xC7, 0xD8, 0xFF);
 u32 white  = C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF);
 u32 offwhite  = C2D_Color32(0xF7, 0xF7, 0xD8, 0xFF);
 u32 beatred  = C2D_Color32(0xEB, 0x5A, 0x7F, 0xFF);
+u32 supportcolor  = C2D_Color32(0x00, 0x00, 0x00, 0xFF);
 u32 offgrey  = C2D_Color32(0xE0, 0xDE, 0xC9, 0xFF);
 u32 YAOL   = C2D_Color32(0x33, 0x36, 0x3F, 0xFF);
 u32 YAShadow   = C2D_Color32(0x33, 0x36, 0x3F, 0x5F);
@@ -45,6 +47,7 @@ struct song {
 	char author[20];
 	char artist[20];
 	char audio[20];
+	char difficulty[20];
 };
 struct song songs[50];
     char indexs[15];
@@ -52,6 +55,7 @@ struct song songs[50];
 #include "./games/unbeat.c"
 #include "./general-utills/previews.c"
 #include "./general-utills/parser.c"
+#include "./general-utills/parsing/beatmaps.c"
 fsInit();
 
 songs[0] = parseSong("sdmc:/UNBEATABLE/songs.txt");
@@ -81,11 +85,26 @@ printSong(songs[0]);
 	
 	// consoleInit(GFX_BOTTOM, NULL);
 	int time=0;
-	void drawSong(int x,int y, struct song s){
+	void drawSong(int x,int y, struct song s,bool sel){
 		char temp[50];
-		strcpy(temp, "// ");
+		strcpy(temp, "//");
 		strcat(temp,s.title);
-		YACTRText(temp,x, y+5,.7,beatred);
+		float WID;
+		float HEI;
+
+		YACTRText(temp,x+10, y+5,.7,beatred);
+		if(sel){
+
+			C2D_TextGetDimensions(&Text, .7, .7, &WID, &HEI);
+			C2D_DrawRectangle(
+				x+5, y, .51, 
+				WID+10,  HEI+10, supportcolor, supportcolor,supportcolor,supportcolor );
+			betterText(temp,0,x+10, y+5,.52,.7,.7,offwhite);
+		}
+		// YACTRText(temp,x+10, y+5,.7,offwhite);
+
+
+
 		YACTRTextRight("10",x-5, y,1,beatred);
 		YACTRTextRight("10",x-5, y+1,1,beatred);
 		YACTRTextRight("10",x-5, y-1,1,beatred);
@@ -94,6 +113,7 @@ printSong(songs[0]);
 		YACTRTextRightSqu("LV",x-4, y-5,.5,.3,beatred);
 		YACTRTextRightSqu("LV",x-5, y-5,.5,.3,beatred);
 		YACTRTextRightSqu("LV",x-4, y-6,.5,.3,beatred);
+		YACTRTextRightSqu(s.difficulty,x-4, y+25,.3,.3,beatred);
 
 		// strcpy(temp, "By: ");
 		// strcat(temp,s.artist);
@@ -117,13 +137,13 @@ printSong(songs[0]);
 		C2D_DrawRectangle(
 			0, 190, .6, 
 			300,  300, beatred, beatred,beatred,beatred );
-		drawSong(10,50+50*1, songs[0]);		
-		drawSong(10,50+50*2, songs[0]);		
-		drawSong(10,50+50*3, songs[0]);		
-		drawSong(10,50+50*0, songs[0]);		
-		drawSong(10,50-50*1, songs[0]);		
-		betterText("UNBEATABLE!",1,80, 175,.7,1,1,offwhite);
-		betterText("Press A!",1,100, 205,.7,1,1,offwhite);
+		drawSong(10,50+50*1, songs[0],false);		
+		drawSong(10,50+50*2, songs[0],false);		
+		drawSong(10,50+50*3, songs[0],false);		
+		drawSong(10,50+50*0, songs[0],false);		
+		drawSong(10,50-50*1, songs[0],false);		
+		betterText("UNBEATABLE!",C2D_AlignRight,SCREEN_WIDTH_B-10, 205,.7,1,1,offwhite);
+		betterText("Press A!",C2D_AlignRight,SCREEN_WIDTH_B-10, 175,.7,1,1,offwhite);
 		// YACTRText("UNBEATABLE!",80, 145,1,offwhite);
 		// YACTRText("Press A!",100, 175,1,offwhite);
         C3D_FrameEnd(0);
@@ -141,12 +161,13 @@ printSong(songs[0]);
         C2D_TargetClear(top, offwhite);
 		YACTRTextRightSqu("SONG", SCREEN_WIDTH-5, -30,3,2,offgrey);
 		YACTRTextRightSqu("SELECT", SCREEN_WIDTH-100, SCREEN_HEIGHT-35,3,2,offgrey);
-		drawSong(50,50, songs[0]);		
-		drawSong(50,50+50*1, songs[0]);		
-		drawSong(50,50+50*2, songs[0]);		
-		drawSong(50,50+50*3, songs[0]);		
-		drawSong(50,50+50*4, songs[0]);		
-		drawSong(50,50-50*1, songs[0]);		
+		drawSong(50,50+50*index, songs[0],true);		
+		drawSong(50,50, songs[0],false);		
+		drawSong(50,50+50*1, songs[0],false);		
+		drawSong(50,50+50*2, songs[0],false);		
+		drawSong(50,50+50*3, songs[0],false);		
+		drawSong(50,50+50*4, songs[0],false);		
+		drawSong(50,50-50*1, songs[0],false);		
 		C2D_DrawTriangle(
 			SCREEN_WIDTH-150, SCREEN_HEIGHT, beatred, 
 			SCREEN_WIDTH,  SCREEN_HEIGHT, beatred,
@@ -166,8 +187,8 @@ printSong(songs[0]);
 
 		u32 kDown = hidKeysDown();
 		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {state=1;}
-		// if (kDown & KEY_DLEFT  ||(touch.px<20&&touch.px>3))  {index--;}
-		// if (kDown & KEY_DRIGHT ||(touch.px>300)) {index++;}
+		if (kDown & KEY_DUP  )  {index--;}
+		if (kDown & KEY_DDOWN ) {index++;}
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(top);
 	}

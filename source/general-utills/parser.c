@@ -52,40 +52,22 @@ struct song parseSong(char *songPath){
                 {
                     char* word=split;
                     if(strcmp(statew,"null")==0){
+                            split=strtok(NULL,"\r\n");
                         if(strcmp(word,"Title")==0){
-                            strcpy(statew,"Title");
-                            // printf(word);
+                            strcpy(parsing.title,split);
                         }
                         if(strcmp(word,"Artist")==0){
-                            strcpy(statew,"Artist");
-                            // printf(word);
+                            strcpy(parsing.artist,split);
                         }
                         if(strcmp(word,"Creator")==0){
-                            strcpy(statew,"Author");
-                            // printf(word);
+                            strcpy(parsing.author,split);
                         }
-                    }else{
-                        
-                        // word[strcspn(word, "\n")]=0;
-                        if(strcmp(statew,"Title")==0){
-                            index+=1;
-                            strcpy(parsing.title,word);
-                            // printf(word);
+                        if(strcmp(word,"Version")==0){
+                            strcpy(parsing.difficulty,split);
                         }
-                        if(strcmp(statew,"Artist")==0){
-                            index+=1;
-                            strcpy(parsing.artist,word);
-                            // printf(word);
-                        }
-                        if(strcmp(statew,"Author")==0){
-                            index+=1;
-                            strcpy(parsing.author,word);
-                            // printf(word);
-                        }
-                        strcpy(statew,"null");
                     }
+                            split=strtok(NULL,"\r\n");
                     // printf(word);
-                    split=strtok(NULL,"\r\n");
                 }
             }
         }
