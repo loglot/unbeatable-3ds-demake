@@ -62,6 +62,7 @@ struct song songs[50];
 fsInit();
 
 songs[0] = parseSong("sdmc:/UNBEATABLE/songs.txt");
+songs[1] = parseSong("sdmc:/UNBEATABLE/3.txt");
 printSong(songs[0]);
 printSong(songs[0]);
 printSong(songs[0]);
@@ -90,8 +91,21 @@ printSong(songs[0]);
 	int time=0;
 	void drawSong(int x,int y, struct song s,bool sel){
 		char temp[50];
+		char lim[20];
+		int aaa=0;
 		strcpy(temp, "//");
-		strcat(temp,s.title);
+		if(strlen(s.title)>10){
+			while (aaa<10){
+				lim[aaa]=s.title[aaa];
+				aaa++;
+			}
+			// strcpy(lim,s.title);
+			strcat(temp,lim);
+			strcat(temp,"...");
+		}else{
+			strcat(temp,s.title);
+
+		}
 		float WID;
 		float HEI;
 
@@ -169,18 +183,18 @@ printSong(songs[0]);
         C2D_TargetClear(top, offwhite);
 		YACTRTextRightSqu("SONG", SCREEN_WIDTH-5, -30,3,2,offgrey);
 		YACTRTextRightSqu("SELECT", SCREEN_WIDTH-100, SCREEN_HEIGHT-35,3,2,offgrey);
-		drawSong(50,50+50*index, songs[0],true);		
+		drawSong(50,50+50*index, songs[index%2],true);		
 		drawSong(50,50, songs[0],false);		
-		drawSong(50,50+50*1, songs[0],false);		
+		drawSong(50,50+50*1, songs[1],false);		
 		drawSong(50,50+50*2, songs[0],false);		
-		drawSong(50,50+50*3, songs[0],false);		
+		drawSong(50,50+50*3, songs[1],false);		
 		drawSong(50,50+50*4, songs[0],false);		
-		drawSong(50,50-50*1, songs[0],false);		
+		drawSong(50,50-50*1, songs[1],false);		
 		C2D_DrawTriangle(
 			SCREEN_WIDTH-150, SCREEN_HEIGHT, beatred, 
 			SCREEN_WIDTH,  SCREEN_HEIGHT, beatred,
 			SCREEN_WIDTH, SCREEN_HEIGHT-150, beatred, .6);
-		drawCurSong(songs[0]);		
+		drawCurSong(songs[index%2]);		
         C3D_FrameEnd(0);
 	}
 	void draw(){
