@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <3ds.h>
 #include <citro2d.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 
 
@@ -36,6 +38,7 @@ u32 supportcolor  = C2D_Color32(0x00, 0x00, 0x00, 0xFF);
 u32 offgrey  = C2D_Color32(0xE0, 0xDE, 0xC9, 0xFF);
 u32 YAOL   = C2D_Color32(0x33, 0x36, 0x3F, 0xFF);
 u32 YAShadow   = C2D_Color32(0x33, 0x36, 0x3F, 0x5F);
+int imgwid, imghei, imgch;
 float targetScale=.8;
 int animation=-1;
 float scale=0;
@@ -63,6 +66,19 @@ fsInit();
 
 songs[0] = parseSong("sdmc:/UNBEATABLE/songs.txt");
 songs[1] = parseSong("sdmc:/UNBEATABLE/3.txt");
+unsigned char *cover=stbi_load("sdmc:/UNBEATABLE/cover.jpg",&imgwid,&imghei,&imgch,4) ;
+
+C3D_Tex* tex = malloc(sizeof(C3D_Tex));
+C3D_TexInit(tex, imgwid, imghei, GPU_RGBA8);
+tex->border = 0;
+// tex->active = true;
+
+C3D_TexUpload(tex, cover);
+stbi_image_free(cover);
+
+C2D_Image image = { {tex, NULL}, {0, 0, imgwid, imghei} };
+
+
 printSong(songs[0]);
 printSong(songs[0]);
 printSong(songs[0]);
@@ -116,7 +132,7 @@ printSong(songs[0]);
 			C2D_DrawRectangle(
 				x+5, y, .51, 
 				WID+10,  HEI+10, supportcolor, supportcolor,supportcolor,supportcolor );
-			betterText(temp,0,x+10, y+5,.52,.7,.7,offwhite);
+			betterText(temp,0,x+10, y+5,1,.7,.7,offwhite);
 		}
 		// YACTRText(temp,x+10, y+5,.7,offwhite);
 
@@ -175,6 +191,8 @@ printSong(songs[0]);
 		C2D_DrawRectangle(
 			200, 50, .2, 
 			150,  150,supportcolor, supportcolor,supportcolor,supportcolor);
+		C2D_DrawImageAt(image, 20, 50, 1.0, NULL, 1.0, 1.0);
+		YACTRTextRightCusDep(cover, SCREEN_WIDTH-10, 55,.5,offgrey,1);
 	}
     void drawTop(){
 		
@@ -189,12 +207,12 @@ printSong(songs[0]);
 		drawSong(50,50+50*2, songs[0],false);		
 		drawSong(50,50+50*3, songs[1],false);		
 		drawSong(50,50+50*4, songs[0],false);		
-		drawSong(50,50-50*1, songs[1],false);		
+		drawSong(50,50-50*1, songs[1],false);	
 		C2D_DrawTriangle(
 			SCREEN_WIDTH-150, SCREEN_HEIGHT, beatred, 
 			SCREEN_WIDTH,  SCREEN_HEIGHT, beatred,
-			SCREEN_WIDTH, SCREEN_HEIGHT-150, beatred, .6);
-		drawCurSong(songs[index%2]);		
+			SCREEN_WIDTH, SCREEN_HEIGHT-150, beatred, .6);		
+		drawCurSong(songs[index%2]);	
         C3D_FrameEnd(0);
 	}
 	void draw(){
