@@ -7,10 +7,19 @@
 #include <stdlib.h>
 #include <3ds.h>
 #include <citro2d.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <c3d/texture.h>
+#include <stdlib.h>
+#include <c2d/base.h>
+
+// #define STB_IMAGE_IMPLEMENTATION
+// #include "stb_image.h"
+#include "lodepng.h"
 
 
+
+#define ICON_WIDTH 256
+#define ICON_HEIGHT 256
+#define TEX_SIZE 256
 
 #define SCREEN_WIDTH   400
 #define SCREEN_WIDTH_B 320
@@ -21,6 +30,66 @@
 int main(int argc, char* argv[]) {
 //---------------------------------------------------------------------------------
 
+ bool loadPngImage(C2D_Image* image, const char* path) {
+    //char path[128] = "sdmc:/22.png";
+    //snprintf(path, sizeof(path), "/3ds/switch/icons/%016llX.png", titleId);
+
+    unsigned char* pngData = NULL;
+    unsigned width = 0, height = 0;
+    unsigned error = lodepng_decode32_file(&pngData, &width, &height, path);
+    
+    if (error || pngData == NULL) {
+        return false;
+    }
+
+    if (width != ICON_WIDTH || height != ICON_HEIGHT) {
+        free(pngData);
+        return false;
+    }
+
+    C3D_Tex* tex = (C3D_Tex*)linearAlloc(sizeof(C3D_Tex));
+    Tex3DS_SubTexture* subtex = (Tex3DS_SubTexture*)linearAlloc(sizeof(Tex3DS_SubTexture));
+    if (!tex || !subtex) {
+        if (tex) linearFree(tex);
+        if (subtex) linearFree(subtex);
+        free(pngData);
+        return false;
+    }
+
+  
+    C3D_TexInit(tex, TEX_SIZE, TEX_SIZE, GPU_RGBA8);
+    C3D_TexSetFilter(tex, GPU_LINEAR, GPU_LINEAR);
+    tex->border = 0xFFFFFFFF;
+
+    for (u32 y = 0; y < height; y++) {
+        for (u32 x = 0; x < width; x++) {
+            u32 dstPos = ((((y >> 3) * (TEX_SIZE >> 3) + (x >> 3)) << 6) +
+                          ((x & 1) | ((y & 1) << 1) | ((x & 2) << 1) |
+                           ((y & 2) << 2) | ((x & 4) << 2) | ((y & 4) << 3))) * 4;
+            u32 srcPos = (y * width + x) * 4;
+            u8* dst = (u8*)tex->data + dstPos;
+      
+            dst[0] = pngData[srcPos + 3]; // Alpha
+            dst[1] = pngData[srcPos + 2]; // Blue
+            dst[2] = pngData[srcPos + 1]; // Green
+            dst[3] = pngData[srcPos + 0]; // Red
+        }
+    }
+
+ 
+    *subtex = (Tex3DS_SubTexture){
+        .width  = ICON_WIDTH,
+        .height = ICON_HEIGHT,
+        .left   = 0.0f,
+        .top    = 1.0f,
+        .right  = ICON_WIDTH / (float)TEX_SIZE,
+        .bottom = 1.0f - (ICON_HEIGHT / (float)TEX_SIZE)
+    };
+
+    *image = (C2D_Image){ tex, subtex };
+    free(pngData);
+    return true;
+}
 gfxInitDefault();
 // consoleInit(GFX_BOTTOM, NULL);
 C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
@@ -61,23 +130,31 @@ struct song songs[50];
 #include "./games/unbeat.c"
 #include "./general-utills/previews.c"
 #include "./general-utills/parser.c"
-#include "./general-utills/parsing/beatmaps.c"
 fsInit();
 
-songs[0] = parseSong("sdmc:/UNBEATABLE/songs.txt");
-songs[1] = parseSong("sdmc:/UNBEATABLE/3.txt");
-unsigned char *cover=stbi_load("sdmc:/UNBEATABLE/cover.jpg",&imgwid,&imghei,&imgch,4) ;
+songs[0] = parseSong("sdmc:/UNBEATABLE/1.txt");
+songs[1] = parseSong("sdmc:/UNBEATABLE/1.txt");
+songs[2] = parseSong("sdmc:/UNBEATABLE/2.txt");
+songs[3] = parseSong("sdmc:/UNBEATABLE/3.txt");
+songs[4] = parseSong("sdmc:/UNBEATABLE/4.txt");
+songs[5] = parseSong("sdmc:/UNBEATABLE/5.txt");
+songs[6] = parseSong("sdmc:/UNBEATABLE/6.txt");
+songs[7] = parseSong("sdmc:/UNBEATABLE/7.txt");
+songs[8] = parseSong("sdmc:/UNBEATABLE/8.txt");
+// unsigned char *cover=stbi_load("sdmc:/UNBEATABLE/cover.png",&imgwid,&imghei,&imgch,4) ;
 
-C3D_Tex* tex = malloc(sizeof(C3D_Tex));
-C3D_TexInit(tex, imgwid, imghei, GPU_RGBA8);
-tex->border = 0;
+// C3D_Tex* tex = malloc(sizeof(C3D_Tex));
+// C3D_TexInit(tex, imgwid, imghei, GPU_RGBA8);
+// tex->border = 0;
 // tex->active = true;
 
-C3D_TexUpload(tex, cover);
-stbi_image_free(cover);
+// // CITRO 2D SUCKS SO MUCH JUST LET ME DRAW THE IMAGE YOU STUPID LIBRARY
 
-C2D_Image image = { {tex, NULL}, {0, 0, imgwid, imghei} };
+// C3D_TexUpload(tex, cover);
+// stbi_image_free(cover);
 
+C2D_Image image ;//= //{ {tex, NULL}, {0, 0, imgwid, imghei} };
+loadPngImage(&image, "sdmc:/UNBEATABLE/cover.png");
 
 printSong(songs[0]);
 printSong(songs[0]);
@@ -107,14 +184,16 @@ printSong(songs[0]);
 	int time=0;
 	void drawSong(int x,int y, struct song s,bool sel){
 		char temp[50];
-		char lim[20];
+		char lim[11];
 		int aaa=0;
 		strcpy(temp, "//");
 		if(strlen(s.title)>10){
-			while (aaa<10){
-				lim[aaa]=s.title[aaa];
-				aaa++;
-			}
+			//char target[11]; // 10 chars + 1 for null terminator '\0'
+			snprintf(lim, sizeof(lim), "%.10s", s.title);
+			// while (aaa<10){
+			// 	lim[aaa]=s.title[aaa];
+			// 	aaa++;
+			// }
 			// strcpy(lim,s.title);
 			strcat(temp,lim);
 			strcat(temp,"...");
@@ -170,11 +249,11 @@ printSong(songs[0]);
 		C2D_DrawRectangle(
 			0, 190, .6, 
 			300,  300, beatred, beatred,beatred,beatred );
-		drawSong(10,50+50*1, songs[0],false);		
-		drawSong(10,50+50*2, songs[0],false);		
-		drawSong(10,50+50*3, songs[0],false);		
-		drawSong(10,50+50*0, songs[0],false);		
-		drawSong(10,50-50*1, songs[0],false);		
+		drawSong(10,50+50*1, songs[8],false);		
+		drawSong(10,50+50*2, songs[2],false);		
+		drawSong(10,50+50*3, songs[3],false);		
+		drawSong(10,50+50*0, songs[7],false);		
+		drawSong(10,50-50*1, songs[6],false);		
 		betterText("UNBEATABLE!",C2D_AlignRight,SCREEN_WIDTH_B-10, 205,.7,1,1,offwhite);
 		betterText("Press A!",C2D_AlignRight,SCREEN_WIDTH_B-10, 175,.7,1,1,offwhite);
 		// YACTRText("UNBEATABLE!",80, 145,1,offwhite);
@@ -182,37 +261,36 @@ printSong(songs[0]);
         C3D_FrameEnd(0);
 	}
 	void drawCurSong(struct song s){
+		C2D_DrawRectangle(
+			200, 50, .2, 
+			150,  150,supportcolor, supportcolor,supportcolor,supportcolor);
+		C2D_DrawImageAt(image, 200, 50, 0.5f, NULL,150/256.0,150/256.0);
 
 		YACTRTextRightCusDep("Charted By:", SCREEN_WIDTH-5, SCREEN_HEIGHT-35,.5,offwhite,1);
 		YACTRTextRightCusDep(s.author, SCREEN_WIDTH-5, SCREEN_HEIGHT-20,.5,offwhite,1);
 		YACTRTextRightCusDep(s.tags, SCREEN_WIDTH-10, 70,.5,beatred,1);
 		YACTRTextRightCusDep(s.flavor, SCREEN_WIDTH-10, 25,.5,offgrey,1);
 		// YACTRText(s.audio, 5, SCREEN_HEIGHT-20,.5,beatred);
-		C2D_DrawRectangle(
-			200, 50, .2, 
-			150,  150,supportcolor, supportcolor,supportcolor,supportcolor);
-		C2D_DrawImageAt(image, 20, 50, 1.0, NULL, 1.0, 1.0);
-		YACTRTextRightCusDep(cover, SCREEN_WIDTH-10, 55,.5,offgrey,1);
 	}
     void drawTop(){
 		
-        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);	
         C2D_SceneBegin(top);
         C2D_TargetClear(top, offwhite);
-		YACTRTextRightSqu("SONG", SCREEN_WIDTH-5, -30,3,2,offgrey);
-		YACTRTextRightSqu("SELECT", SCREEN_WIDTH-100, SCREEN_HEIGHT-35,3,2,offgrey);
-		drawSong(50,50+50*index, songs[index%2],true);		
-		drawSong(50,50, songs[0],false);		
-		drawSong(50,50+50*1, songs[1],false);		
-		drawSong(50,50+50*2, songs[0],false);		
-		drawSong(50,50+50*3, songs[1],false);		
-		drawSong(50,50+50*4, songs[0],false);		
-		drawSong(50,50-50*1, songs[1],false);	
 		C2D_DrawTriangle(
 			SCREEN_WIDTH-150, SCREEN_HEIGHT, beatred, 
 			SCREEN_WIDTH,  SCREEN_HEIGHT, beatred,
-			SCREEN_WIDTH, SCREEN_HEIGHT-150, beatred, .6);		
+			SCREEN_WIDTH, SCREEN_HEIGHT-150, beatred, .6);	
 		drawCurSong(songs[index%2]);	
+		YACTRTextRightSqu("SONG", SCREEN_WIDTH-5, -30,3,2,offgrey);
+		YACTRTextRightSqu("SELECT", SCREEN_WIDTH-100, SCREEN_HEIGHT-35,3,2,offgrey);
+		drawSong(50,50+50*index, songs[3],true);		
+		drawSong(50,50, songs[2],false);		
+		drawSong(50,50+50*1, songs[3],false);		
+		drawSong(50,50+50*2, songs[4],false);		
+		drawSong(50,50+50*3, songs[5],false);		
+		drawSong(50,50+50*4, songs[0],false);		
+		drawSong(50,50-50*1, songs[1],false);	
         C3D_FrameEnd(0);
 	}
 	void draw(){
