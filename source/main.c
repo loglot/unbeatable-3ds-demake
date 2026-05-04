@@ -114,6 +114,7 @@ float scale=0;
 int index = 0;
 int pos=0;
 int state=0;
+float menuy=0;
 struct song {
 	char title[20];
 	char author[20];
@@ -132,7 +133,7 @@ struct song songs[50];
 #include "./general-utills/parser.c"
 fsInit();
 
-songs[0] = parseSong("sdmc:/UNBEATABLE/1.txt");
+// songs[0] = parseSong("sdmc:/UNBEATABLE/1.txt");
 songs[1] = parseSong("sdmc:/UNBEATABLE/1.txt");
 songs[2] = parseSong("sdmc:/UNBEATABLE/2.txt");
 songs[3] = parseSong("sdmc:/UNBEATABLE/3.txt");
@@ -140,7 +141,8 @@ songs[4] = parseSong("sdmc:/UNBEATABLE/4.txt");
 songs[5] = parseSong("sdmc:/UNBEATABLE/5.txt");
 songs[6] = parseSong("sdmc:/UNBEATABLE/6.txt");
 songs[7] = parseSong("sdmc:/UNBEATABLE/7.txt");
-songs[8] = parseSong("sdmc:/UNBEATABLE/8.txt");
+songs[0] = parseSong("sdmc:/UNBEATABLE/8.txt");
+int scount = 8;
 // unsigned char *cover=stbi_load("sdmc:/UNBEATABLE/cover.png",&imgwid,&imghei,&imgch,4) ;
 
 // C3D_Tex* tex = malloc(sizeof(C3D_Tex));
@@ -249,11 +251,10 @@ printSong(songs[0]);
 		C2D_DrawRectangle(
 			0, 190, .6, 
 			300,  300, beatred, beatred,beatred,beatred );
-		drawSong(10,50+50*1, songs[8],false);		
-		drawSong(10,50+50*2, songs[2],false);		
-		drawSong(10,50+50*3, songs[3],false);		
-		drawSong(10,50+50*0, songs[7],false);		
-		drawSong(10,50-50*1, songs[6],false);		
+		for(int i=0; i<scount;i++){
+			drawSong(10,100+50*i-menuy-50*5, songs[i],false);		
+
+		}
 		betterText("UNBEATABLE!",C2D_AlignRight,SCREEN_WIDTH_B-10, 205,.7,1,1,offwhite);
 		betterText("Press A!",C2D_AlignRight,SCREEN_WIDTH_B-10, 175,.7,1,1,offwhite);
 		// YACTRText("UNBEATABLE!",80, 145,1,offwhite);
@@ -281,16 +282,15 @@ printSong(songs[0]);
 			SCREEN_WIDTH-150, SCREEN_HEIGHT, beatred, 
 			SCREEN_WIDTH,  SCREEN_HEIGHT, beatred,
 			SCREEN_WIDTH, SCREEN_HEIGHT-150, beatred, .6);	
-		drawCurSong(songs[index%2]);	
+		drawCurSong(songs[index]);	
 		YACTRTextRightSqu("SONG", SCREEN_WIDTH-5, -30,3,2,offgrey);
 		YACTRTextRightSqu("SELECT", SCREEN_WIDTH-100, SCREEN_HEIGHT-35,3,2,offgrey);
-		drawSong(50,50+50*index, songs[3],true);		
-		drawSong(50,50, songs[2],false);		
-		drawSong(50,50+50*1, songs[3],false);		
-		drawSong(50,50+50*2, songs[4],false);		
-		drawSong(50,50+50*3, songs[5],false);		
-		drawSong(50,50+50*4, songs[0],false);		
-		drawSong(50,50-50*1, songs[1],false);	
+		drawSong(50,100+50*index-menuy, songs[index],true);		
+		for(int i=0; i<scount;i++){
+			drawSong(50,100+50*i-menuy, songs[i],false);		
+
+		}
+		menuy=(menuy+index*50)/2;
         C3D_FrameEnd(0);
 	}
 	void draw(){
