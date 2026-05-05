@@ -16,6 +16,8 @@
 #include "lodepng.h"
 
 
+u8* buffer;
+u32 size;
 
 #define ICON_WIDTH 256
 #define ICON_HEIGHT 256
@@ -30,6 +32,9 @@
 int main(int argc, char* argv[]) {
 //---------------------------------------------------------------------------------
 
+	srvInit();
+	aptInit();
+	hidInit();
  bool loadPngImage(C2D_Image* image, const char* path) {
     //char path[128] = "sdmc:/22.png";
     //snprintf(path, sizeof(path), "/3ds/switch/icons/%016llX.png", titleId);
@@ -114,6 +119,7 @@ float scale=0;
 int index = 0;
 int pos=0;
 int state=0;
+
 float menuy=0;
 struct song {
 	char title[20];
@@ -132,6 +138,9 @@ struct song songs[50];
 #include "./general-utills/previews.c"
 #include "./general-utills/parser.c"
 fsInit();
+romfsInit();
+    ndspInit();
+	csndInit();//start Audio Lib
 
 // songs[0] = parseSong("sdmc:/UNBEATABLE/1.txt");
 songs[1] = parseSong("sdmc:/UNBEATABLE/1.txt");
@@ -176,12 +185,31 @@ printSong(songs[0]);
 	// 	printf("\x1b[1;1HPress A to Start YAFG");
 		
 	// }
+
+void audio_load(const char *audio){
+
+	FILE *file = fopen(audio, "rb");
+	fseek(file, 0, SEEK_END);
+	off_t size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+	buffer = linearAlloc(size);
+	off_t bytesRead = fread(buffer, 1, size, file);
+	fclose(file);
+	csndPlaySound(8, SOUND_FORMAT_16BIT | SOUND_REPEAT, 48000, 1, 0, buffer, buffer, size);
+	linearFree(buffer);
+}
+void audio_stop(void){
+	csndExecCmds(true);
+	CSND_SetPlayState(0x8, 0);
+	memset(buffer, 0, size);
+	GSPGPU_FlushDataCache(buffer, size);
+	linearFree(buffer);
+}
 	void thistick(){
 
 		u32 kDown = hidKeysDown();
 		// if (kDown & KEY_START) break;
 	}
-	
 	// consoleInit(GFX_BOTTOM, NULL);
 	int time=0;
 	void drawSong(int x,int y, struct song s,bool sel){
@@ -234,6 +262,18 @@ printSong(songs[0]);
 		// YACTRText(temp,x+15, y+30,.5,beatred);
 
 	}
+	void renderList(float x,float y){
+
+		for(int z=0; z<3;z++){
+			for(int i=0; i<scount;i++){
+				if(y+50*i-menuy+(50*(z-1)*scount)>-20&&100+50*i-menuy+(50*(z-1)*scount)<420){
+
+					drawSong(x,y+50*i-menuy+(50*(z-1)*scount), songs[i],false);		
+
+				}
+			}
+		}
+	}
 
     void drawBottom(){
 		
@@ -251,10 +291,7 @@ printSong(songs[0]);
 		C2D_DrawRectangle(
 			0, 190, .6, 
 			300,  300, beatred, beatred,beatred,beatred );
-		for(int i=0; i<scount;i++){
-			drawSong(10,100+50*i-menuy-50*5, songs[i],false);		
-
-		}
+		renderList(10,(100-50*5));		
 		betterText("UNBEATABLE!",C2D_AlignRight,SCREEN_WIDTH_B-10, 205,.7,1,1,offwhite);
 		betterText("Press A!",C2D_AlignRight,SCREEN_WIDTH_B-10, 175,.7,1,1,offwhite);
 		// YACTRText("UNBEATABLE!",80, 145,1,offwhite);
@@ -286,10 +323,7 @@ printSong(songs[0]);
 		YACTRTextRightSqu("SONG", SCREEN_WIDTH-5, -30,3,2,offgrey);
 		YACTRTextRightSqu("SELECT", SCREEN_WIDTH-100, SCREEN_HEIGHT-35,3,2,offgrey);
 		drawSong(50,100+50*index-menuy, songs[index],true);		
-		for(int i=0; i<scount;i++){
-			drawSong(50,100+50*i-menuy, songs[i],false);		
-
-		}
+		renderList(50,100);		
 		menuy=(menuy+index*50)/2;
         C3D_FrameEnd(0);
 	}
@@ -305,8 +339,16 @@ printSong(songs[0]);
 
 		u32 kDown = hidKeysDown();
 		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {state=1;}
-		if (kDown & KEY_DUP  )  {index--;}
+		if (kDown & KEY_DUP  )  {index--;audio_load("sdmc:/blipup.raw");}
 		if (kDown & KEY_DDOWN ) {index++;}
+		if (index<0){
+			index=scount-1;
+			menuy=(menuy+(scount)*50);
+		}
+		if (index>scount-1){
+			index=0;
+			menuy=(menuy-scount*50);
+		}
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(top);
 	}
@@ -331,9 +373,14 @@ while (aptMainLoop())
 }
 
 	// // Deinit libs
+	csndExit();
 	C2D_Fini();
 	C3D_Fini();
 	gfxExit();
 	fsExit();
+	romfsExit();
+	hidExit();
+	aptExit();
+	srvExit();
 	return 0;
 }

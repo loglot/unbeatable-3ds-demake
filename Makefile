@@ -43,7 +43,7 @@ GFXBUILD	     :=	$(BUILD)
 APP_TITLE        :=  UNBEATABLE
 APP_DESCRIPTION  :=  UNBEATABLE: arcade mode
 APP_AUTHOR       :=  loglot
-#ROMFS		     :=	romfs
+ROMFS		     :=	romfs
 #GFXBUILD	     :=	$(ROMFS)/gfx
 
 #---------------------------------------------------------------------------------
