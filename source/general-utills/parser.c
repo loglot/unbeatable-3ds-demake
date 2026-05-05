@@ -1,5 +1,6 @@
 struct song parseSong(char *songPath){
     struct song parsing;
+    strcpy(parsing.path,songPath);
     char mode[30];
     FILE *file = fopen(songPath, "r");
     char line[128];
@@ -92,6 +93,9 @@ struct song parseSong(char *songPath){
     sprintf(indexs, "%d", index);
     return (parsing);
 }
+// struct beatmap parseBeats(char *songPath){
+
+// }
 
 
 void printSong(struct song s){

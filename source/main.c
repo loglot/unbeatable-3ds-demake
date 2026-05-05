@@ -2,167 +2,13 @@
 // WARN: this code is untested, and will probably not build correctly
 
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <3ds.h>
-#include <citro2d.h>
-#include <c3d/texture.h>
-#include <stdlib.h>
-#include <c2d/base.h>
-
-// #define STB_IMAGE_IMPLEMENTATION
-// #include "stb_image.h"
-#include "lodepng.h"
-
-
-u8* buffer;
-u32 size;
-
-#define ICON_WIDTH 256
-#define ICON_HEIGHT 256
-#define TEX_SIZE 256
-
-#define SCREEN_WIDTH   400
-#define SCREEN_WIDTH_B 320
-#define SCREEN_HEIGHT  240
-
+#include "./vars/head.c"
 
 //---------------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
 //---------------------------------------------------------------------------------
 
-	srvInit();
-	aptInit();
-	hidInit();
- bool loadPngImage(C2D_Image* image, const char* path) {
-    //char path[128] = "sdmc:/22.png";
-    //snprintf(path, sizeof(path), "/3ds/switch/icons/%016llX.png", titleId);
-
-    unsigned char* pngData = NULL;
-    unsigned width = 0, height = 0;
-    unsigned error = lodepng_decode32_file(&pngData, &width, &height, path);
-    
-    if (error || pngData == NULL) {
-        return false;
-    }
-
-    if (width != ICON_WIDTH || height != ICON_HEIGHT) {
-        free(pngData);
-        return false;
-    }
-
-    C3D_Tex* tex = (C3D_Tex*)linearAlloc(sizeof(C3D_Tex));
-    Tex3DS_SubTexture* subtex = (Tex3DS_SubTexture*)linearAlloc(sizeof(Tex3DS_SubTexture));
-    if (!tex || !subtex) {
-        if (tex) linearFree(tex);
-        if (subtex) linearFree(subtex);
-        free(pngData);
-        return false;
-    }
-
-  
-    C3D_TexInit(tex, TEX_SIZE, TEX_SIZE, GPU_RGBA8);
-    C3D_TexSetFilter(tex, GPU_LINEAR, GPU_LINEAR);
-    tex->border = 0xFFFFFFFF;
-
-    for (u32 y = 0; y < height; y++) {
-        for (u32 x = 0; x < width; x++) {
-            u32 dstPos = ((((y >> 3) * (TEX_SIZE >> 3) + (x >> 3)) << 6) +
-                          ((x & 1) | ((y & 1) << 1) | ((x & 2) << 1) |
-                           ((y & 2) << 2) | ((x & 4) << 2) | ((y & 4) << 3))) * 4;
-            u32 srcPos = (y * width + x) * 4;
-            u8* dst = (u8*)tex->data + dstPos;
-      
-            dst[0] = pngData[srcPos + 3]; // Alpha
-            dst[1] = pngData[srcPos + 2]; // Blue
-            dst[2] = pngData[srcPos + 1]; // Green
-            dst[3] = pngData[srcPos + 0]; // Red
-        }
-    }
-
- 
-    *subtex = (Tex3DS_SubTexture){
-        .width  = ICON_WIDTH,
-        .height = ICON_HEIGHT,
-        .left   = 0.0f,
-        .top    = 1.0f,
-        .right  = ICON_WIDTH / (float)TEX_SIZE,
-        .bottom = 1.0f - (ICON_HEIGHT / (float)TEX_SIZE)
-    };
-
-    *image = (C2D_Image){ tex, subtex };
-    free(pngData);
-    return true;
-}
-gfxInitDefault();
-// consoleInit(GFX_BOTTOM, NULL);
-C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
-C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
-C2D_Prepare();
-C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-u32 YAGreen   = C2D_Color32(0xAF, 0xBF, 0xAF, 0xFF);
-u32 UI  = C2D_Color32(0x00, 0x00, 0x00, 0x5F);
-u32 YABlue  = C2D_Color32(0xA7, 0xC7, 0xD8, 0xFF);
-u32 white  = C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF);
-u32 offwhite  = C2D_Color32(0xF7, 0xF7, 0xD8, 0xFF);
-u32 beatred  = C2D_Color32(0xEB, 0x5A, 0x7F, 0xFF);
-u32 supportcolor  = C2D_Color32(0x00, 0x00, 0x00, 0xFF);
-u32 offgrey  = C2D_Color32(0xE0, 0xDE, 0xC9, 0xFF);
-u32 YAOL   = C2D_Color32(0x33, 0x36, 0x3F, 0xFF);
-u32 YAShadow   = C2D_Color32(0x33, 0x36, 0x3F, 0x5F);
-int imgwid, imghei, imgch;
-float targetScale=.8;
-int animation=-1;
-float scale=0;
-int index = 0;
-int pos=0;
-int state=0;
-
-float menuy=0;
-struct song {
-	char title[20];
-	char author[20];
-	char artist[20];
-	char audio[20];
-	char difficulty[20];
-	char tags[50];
-	char flavor[50];
-	char level[4];
-};
-struct song songs[50];
-    char indexs[15];
-#include "./general-utills/utillities.c"
-#include "./games/unbeat.c"
-#include "./general-utills/previews.c"
-#include "./general-utills/parser.c"
-fsInit();
-romfsInit();
-    ndspInit();
-	csndInit();//start Audio Lib
-
-// songs[0] = parseSong("sdmc:/UNBEATABLE/1.txt");
-songs[1] = parseSong("sdmc:/UNBEATABLE/1.txt");
-songs[2] = parseSong("sdmc:/UNBEATABLE/2.txt");
-songs[3] = parseSong("sdmc:/UNBEATABLE/3.txt");
-songs[4] = parseSong("sdmc:/UNBEATABLE/4.txt");
-songs[5] = parseSong("sdmc:/UNBEATABLE/5.txt");
-songs[6] = parseSong("sdmc:/UNBEATABLE/6.txt");
-songs[7] = parseSong("sdmc:/UNBEATABLE/7.txt");
-songs[0] = parseSong("sdmc:/UNBEATABLE/8.txt");
-int scount = 8;
-// unsigned char *cover=stbi_load("sdmc:/UNBEATABLE/cover.png",&imgwid,&imghei,&imgch,4) ;
-
-// C3D_Tex* tex = malloc(sizeof(C3D_Tex));
-// C3D_TexInit(tex, imgwid, imghei, GPU_RGBA8);
-// tex->border = 0;
-// tex->active = true;
-
-// // CITRO 2D SUCKS SO MUCH JUST LET ME DRAW THE IMAGE YOU STUPID LIBRARY
-
-// C3D_TexUpload(tex, cover);
-// stbi_image_free(cover);
+#include "./vars/include.c"
 
 C2D_Image image ;//= //{ {tex, NULL}, {0, 0, imgwid, imghei} };
 loadPngImage(&image, "sdmc:/UNBEATABLE/cover.png");
@@ -170,41 +16,6 @@ loadPngImage(&image, "sdmc:/UNBEATABLE/cover.png");
 printSong(songs[0]);
 printSong(songs[0]);
 printSong(songs[0]);
-// C2D_Text Text[2];
-// C2D_Font font;
-// C2D_TextBuf g_staticBuf;
- 
-	// Main loop
-	
-	// consoleInit(GFX_BOTTOM, NULL);
-	// while (aptMainLoop())
-	// {
-	// 	u32 kDown = hidKeysDown();
-	// 	if (kDown & KEY_START) break;
-	// 	if (kDown & KEY_A) YAFG();
-	// 	printf("\x1b[1;1HPress A to Start YAFG");
-		
-	// }
-
-void audio_load(const char *audio){
-
-	FILE *file = fopen(audio, "rb");
-	fseek(file, 0, SEEK_END);
-	off_t size = ftell(file);
-	fseek(file, 0, SEEK_SET);
-	buffer = linearAlloc(size);
-	off_t bytesRead = fread(buffer, 1, size, file);
-	fclose(file);
-	csndPlaySound(8, SOUND_FORMAT_16BIT | SOUND_REPEAT, 48000, 1, 0, buffer, buffer, size);
-	linearFree(buffer);
-}
-void audio_stop(void){
-	csndExecCmds(true);
-	CSND_SetPlayState(0x8, 0);
-	memset(buffer, 0, size);
-	GSPGPU_FlushDataCache(buffer, size);
-	linearFree(buffer);
-}
 	void thistick(){
 
 		u32 kDown = hidKeysDown();
@@ -339,7 +150,7 @@ void audio_stop(void){
 
 		u32 kDown = hidKeysDown();
 		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {state=1;}
-		if (kDown & KEY_DUP  )  {index--;audio_load("sdmc:/blipup.raw");}
+		if (kDown & KEY_DUP  )  {index--;/*audio_load("sdmc:/blipup.raw");*/}
 		if (kDown & KEY_DDOWN ) {index++;}
 		if (index<0){
 			index=scount-1;
@@ -372,15 +183,6 @@ while (aptMainLoop())
 	// printf("\x1b[2;1HCPU:     %6.2f%%\x1b[K", C3D_GetProcessingTime()*6.0f);
 }
 
-	// // Deinit libs
-	csndExit();
-	C2D_Fini();
-	C3D_Fini();
-	gfxExit();
-	fsExit();
-	romfsExit();
-	hidExit();
-	aptExit();
-	srvExit();
+	#include "./vars/end.c"
 	return 0;
 }
