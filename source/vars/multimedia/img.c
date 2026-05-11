@@ -1,4 +1,20 @@
-
+const u32 next_pow2(u32 n) {
+  n--;
+  n |= n >> 1;
+  n |= n >> 2;
+  n |= n >> 4;
+  n |= n >> 8;
+  n |= n >> 16;
+  n++;
+  return n;
+}
+const u32 clamp(u32 n, u32 lower, u32 upper) {
+  if (n < lower)
+    return lower;
+  if (n > upper)
+    return upper;
+  return n;
+}
  bool loadPngImage(C2D_Image* image, const char* path) {
     //char path[128] = "sdmc:/22.png";
     //snprintf(path, sizeof(path), "/3ds/switch/icons/%016llX.png", titleId);
@@ -8,6 +24,7 @@
     unsigned error = lodepng_decode32_file(&pngData, &width, &height, path);
     
     if (error || pngData == NULL) {
+        return false;
         return false;
     }
 
@@ -49,12 +66,12 @@
 
  
     *subtex = (Tex3DS_SubTexture){
-        .width  = width,
-        .height = height,
+        .width  = clamp(next_pow2(width), 64, 1024),
+        .height = clamp(next_pow2(height), 64, 1024),
         .left   = 0.0f,
         .top    = 1.0f,
-        .right  = width / (float)TEX_SIZE,
-        .bottom = 1.0f - (height / (float)TEX_SIZE)
+        .right  = clamp(next_pow2(width), 64, 1024) / (float)TEX_SIZE,
+        .bottom = 1.0f - (clamp(next_pow2(height), 64, 1024) / (float)TEX_SIZE)
     };
 
     *image = (C2D_Image){ tex, subtex };
