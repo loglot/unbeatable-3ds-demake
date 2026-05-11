@@ -94,7 +94,44 @@ struct song parseSong(char *songPath){
     return (parsing);
 }
 // struct beatmap parseBeats(char *songPath){
+//     struct beatmap parsing;
+//     FILE *file = fopen(songPath, "r");
+//     int buf_size = 0;
+//     int buf_used = 0;
+//     char line[128];
+//     char mode[18];
+//     // parsing.beats=NULL;
 
+//     int i = 0;
+//     while (fgets(line, sizeof(line), file) != NULL) {
+//         // printf("File content: %s\n", line);
+//         if(line[0]=='['){
+//             if(line[1]=='H'){
+//                 mode="Hit"
+//             }
+//         }else if(strcmp(mode,"Hit")==0){
+//             if (i == buf_size) {
+//                 //need more space in the array
+
+//                 buf_size += 20;
+//                 tmp = realloc(parsing.beats, buf_size); // get a new larger array
+//                 // if (!tmp) fatal_error();
+
+//                 parsing.beats = tmp;
+//             }
+
+
+//             char* split=strtok(line,",");
+//             strtok(null,",");
+//             strtok(null,",");
+//             char* tmp2=split;
+//             sscanf(split, "%d", &num1);
+
+//             strtok(null,",");
+//             i=i+1;
+//         }
+        
+//     }
 // }
 
 

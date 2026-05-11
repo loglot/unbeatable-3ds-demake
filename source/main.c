@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 #include "./vars/include.c"
 
 C2D_Image image ;//= //{ {tex, NULL}, {0, 0, imgwid, imghei} };
-loadPngImage(&image, "sdmc:/UNBEATABLE/cover.png");
+loadPngImage(&image, "sdmc:/UNBEATABLE/3/cover.png");
 
 printSong(songs[0]);
 printSong(songs[0]);

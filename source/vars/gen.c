@@ -31,6 +31,13 @@ struct song {
 	char flavor[50];
 	char level[4];
 };
+struct beatmap {
+	struct beat* beats;
+};
+struct beat {
+	float time;
+	float type;
+};
 struct song songs[50];
     char indexs[15];
 
