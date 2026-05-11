@@ -31,10 +31,10 @@ void rgDrawTop(){
     C2D_DrawCircleSolid(150, 140, 0, 15, white);
     C2D_DrawCircleSolid(250, 70, 0, 15, white);
     C2D_DrawCircleSolid(250, 140, 0, 15, white);
-		C2D_DrawImageAt(RG_SIL_SINGLE, 300, 50, 0.5f, NULL,8,1);
-		C2D_DrawImageAt(RG_SIL_SINGLE, 300, 120, 0.5f, NULL,8,1);
-		C2D_DrawImageAt(RG_SIL_SINGLE, -150, 50, 0.5f, NULL,-8,1);
-		C2D_DrawImageAt(RG_SIL_SINGLE, -150, 120, 0.5f, NULL,-8,1);
+		C2D_DrawImageAt(RG_SIL_SINGLE, 300, 50, 0.5f, NULL,1,1);
+		C2D_DrawImageAt(RG_SIL_SINGLE, 300, 120, 0.5f, NULL,1,1);
+		C2D_DrawImageAt(RG_SIL_SINGLE, 70, 50, 0.5f, NULL,-1,1);
+		C2D_DrawImageAt(RG_SIL_SINGLE, 70, 120, 0.5f, NULL,-1,1);
     C2D_DrawCircleSolid(200, beatposy, 0, 20, white);
 	u32 kDown = hidKeysDown();
 	if (kDown & (KEY_A | KEY_B | KEY_X | KEY_Y)) 

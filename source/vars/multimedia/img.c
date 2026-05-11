@@ -53,7 +53,7 @@
         .height = height,
         .left   = 0.0f,
         .top    = 1.0f,
-        .right  = ICON_WIDTH / (float)TEX_SIZE,
+        .right  = width / (float)TEX_SIZE,
         .bottom = 1.0f - (height / (float)TEX_SIZE)
     };
 
