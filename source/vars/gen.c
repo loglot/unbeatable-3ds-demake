@@ -41,3 +41,4 @@ struct beat {
 struct song songs[50];
     char indexs[15];
 
+char inds [50];

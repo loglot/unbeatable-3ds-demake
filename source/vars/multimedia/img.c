@@ -12,8 +12,10 @@
     }
 
     if (width != ICON_WIDTH || height != ICON_HEIGHT) {
-        free(pngData);
-        return false;
+        // free(pngData);
+        // // return false;
+        // ICON_WIDTH=width;
+        // ICON_HEIGHT=height;
     }
 
     C3D_Tex* tex = (C3D_Tex*)linearAlloc(sizeof(C3D_Tex));
@@ -47,12 +49,12 @@
 
  
     *subtex = (Tex3DS_SubTexture){
-        .width  = ICON_WIDTH,
-        .height = ICON_HEIGHT,
+        .width  = width,
+        .height = height,
         .left   = 0.0f,
         .top    = 1.0f,
         .right  = ICON_WIDTH / (float)TEX_SIZE,
-        .bottom = 1.0f - (ICON_HEIGHT / (float)TEX_SIZE)
+        .bottom = 1.0f - (height / (float)TEX_SIZE)
     };
 
     *image = (C2D_Image){ tex, subtex };

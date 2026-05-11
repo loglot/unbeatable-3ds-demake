@@ -150,5 +150,6 @@ void printSong(struct song s){
     strcpy(temp, "Charted By : ");
     strcat(temp,s.author);
     printf(temp);
+    printf("\n\n");
 
 }

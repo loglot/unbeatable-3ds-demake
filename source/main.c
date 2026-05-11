@@ -14,15 +14,32 @@ C2D_Image image ;//= //{ {tex, NULL}, {0, 0, imgwid, imghei} };
 loadPngImage(&image, "sdmc:/UNBEATABLE/3/cover.png");
 
 printSong(songs[0]);
-printSong(songs[0]);
-printSong(songs[0]);
 	void thistick(){
 
 		u32 kDown = hidKeysDown();
 		// if (kDown & KEY_START) break;
 	}
 	// consoleInit(GFX_BOTTOM, NULL);
-	int time=0;
+	int time=0;// Example freeing sequence
+void FreeCitro2DImage(C2D_Image* image) {
+    if (image->tex) {
+        C3D_TexDelete(image->tex); // Deletes the GPU texture
+        // free(image->tex);          // Free the C3D_Tex struct if you used malloc
+    }
+}
+
+	void changeImg(char *loc){
+		char place [50];
+		strcpy(place, "sdmc:/UNBEATABLE/");
+		strcat(place, loc);
+		printf(place);
+		printf("\n\n");
+		printf(loc);
+		printf("\n\n");
+		FreeCitro2DImage(&image);
+		
+		loadPngImage(&image, place);
+	}
 	void drawSong(int x,int y, struct song s,bool sel){
 		char temp[50];
 		char lim[11];
@@ -139,7 +156,7 @@ printSong(songs[0]);
         C3D_FrameEnd(0);
 	}
 	void draw(){
-		drawBottom();
+		// drawBottom();
 		drawTop();
 	}
 	void tick(){
@@ -150,8 +167,25 @@ printSong(songs[0]);
 
 		u32 kDown = hidKeysDown();
 		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {state=1;}
-		if (kDown & KEY_DUP  )  {index--;/*audio_load("sdmc:/blipup.raw");*/}
-		if (kDown & KEY_DDOWN ) {index++;}
+		if (kDown & KEY_DUP  )  {
+			index--;
+			/*audio_load("sdmc:/blipup.raw");*/
+			strcpy(inds, "");
+    		sprintf(inds, "%d", index);
+			strcat(inds, "/cover.png");
+			changeImg(inds);
+
+		}
+		if (kDown & KEY_DDOWN ) {
+			index++;
+			strcpy(inds, "");
+    		sprintf(inds, "%d", index);
+    		// printf(inds);
+			strcat(inds, "/cover.png");
+			changeImg(inds);
+
+
+		}
 		if (index<0){
 			index=scount-1;
 			menuy=(menuy+(scount)*50);
