@@ -131,6 +131,10 @@ void FreeCitro2DImage(C2D_Image* image) {
 			200, 50, .2, 
 			150,  150,supportcolor, supportcolor,supportcolor,supportcolor);
 		C2D_DrawImageAt(image, 200, 50, 0.5f, NULL,150.0/imgwidt,150.0/imgheit);
+		if(imgwidt>1024){
+			betterText("[!WARN!] IMAGE TOO BIG",0,200, 50,.7,.4,.5,offwhite);
+			// betterText("[!WARN!] IMAGE TOO BIG",color, float x, float y, float d, float size,float sizet,u32 color)
+		}
 
 		YACTRTextRightCusDep("Charted By:", SCREEN_WIDTH-5, SCREEN_HEIGHT-35,.5,offwhite,1);
 		YACTRTextRightCusDep(s.author, SCREEN_WIDTH-5, SCREEN_HEIGHT-20,.5,offwhite,1);
