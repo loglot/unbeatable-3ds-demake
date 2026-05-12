@@ -16,9 +16,9 @@
 u8* buffer;
 u32 size;
 
-#define ICON_WIDTH 256
-#define ICON_HEIGHT 256
-#define TEX_SIZE 256
+#define ICON_WIDTH 1024
+#define ICON_HEIGHT 1024
+#define TEX_SIZE 1024
 
 #define SCREEN_WIDTH   400
 #define SCREEN_WIDTH_B 320

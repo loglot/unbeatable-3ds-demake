@@ -16,9 +16,17 @@ void rgDrawBottom(){
     
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     C2D_SceneBegin(bottom);
-    C2D_TargetClear(bottom, white);
+    C2D_TargetClear(bottom, YAOL);
     // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
-    YACTRText("rhythm game test zone",80, 145,1,UI);
+    // YACTRText("rhythm game test zone",80, 145,1,UI);
+		C2D_DrawRectangle(
+			0, 0, .6, 
+			500,  105, beatred, beatred,beatred,beatred );
+		C2D_DrawRectangle(
+			0, 125, .6, 
+			500,  130, quaverblue,quaverblue,quaverblue,quaverblue);
+    C2D_DrawCircleSolid(160, 120, 1, 75, YAOL);
+    C2D_DrawCircleSolid(160, 120, 1, 55, white);
     C3D_FrameEnd(0);
 }
 void rgDrawTop(){
@@ -33,8 +41,8 @@ void rgDrawTop(){
     C2D_DrawCircleSolid(250, 140, 0, 15, white);
 		C2D_DrawImageAt(RG_SIL_SINGLE, 300, 50, 0.5f, NULL,1,1);
 		C2D_DrawImageAt(RG_SIL_SINGLE, 300, 120, 0.5f, NULL,1,1);
-		C2D_DrawImageAt(RG_SIL_SINGLE, 70, 50, 0.5f, NULL,-1,1);
-		C2D_DrawImageAt(RG_SIL_SINGLE, 70, 120, 0.5f, NULL,-1,1);
+		C2D_DrawImageAt(RG_SIL_SINGLE, 50, 50, 0.5f, NULL,-1,1);
+		C2D_DrawImageAt(RG_SIL_SINGLE, 50, 120, 0.5f, NULL,-1,1);
     C2D_DrawCircleSolid(200, beatposy, 0, 20, white);
 	u32 kDown = hidKeysDown();
 	if (kDown & (KEY_A | KEY_B | KEY_X | KEY_Y)) 

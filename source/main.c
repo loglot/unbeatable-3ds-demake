@@ -130,7 +130,7 @@ void FreeCitro2DImage(C2D_Image* image) {
 		C2D_DrawRectangle(
 			200, 50, .2, 
 			150,  150,supportcolor, supportcolor,supportcolor,supportcolor);
-		C2D_DrawImageAt(image, 200, 50, 0.5f, NULL,150/256.0,150/256.0);
+		C2D_DrawImageAt(image, 200, 50, 0.5f, NULL,150.0/imgwidt,150.0/imgheit);
 
 		YACTRTextRightCusDep("Charted By:", SCREEN_WIDTH-5, SCREEN_HEIGHT-35,.5,offwhite,1);
 		YACTRTextRightCusDep(s.author, SCREEN_WIDTH-5, SCREEN_HEIGHT-20,.5,offwhite,1);
@@ -156,7 +156,7 @@ void FreeCitro2DImage(C2D_Image* image) {
         C3D_FrameEnd(0);
 	}
 	void draw(){
-		// drawBottom();
+		drawBottom();
 		drawTop();
 	}
 	void tick(){
@@ -169,23 +169,14 @@ void FreeCitro2DImage(C2D_Image* image) {
 		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {state=1;}
 		if (kDown & KEY_DUP  )  {
 			index--;
-			/*audio_load("sdmc:/blipup.raw");*/
-			strcpy(inds, "");
-    		sprintf(inds, "%d", index);
-			strcat(inds, "/cover.png");
-			changeImg(inds);
+			chind=1;
 
 		}
 		if (kDown & KEY_DDOWN ) {
 			index++;
-			strcpy(inds, "");
-    		sprintf(inds, "%d", index);
-    		// printf(inds);
-			strcat(inds, "/cover.png");
-			changeImg(inds);
-
-
+			chind=1;
 		}
+		
 		if (index<0){
 			index=scount-1;
 			menuy=(menuy+(scount)*50);
@@ -193,6 +184,13 @@ void FreeCitro2DImage(C2D_Image* image) {
 		if (index>scount-1){
 			index=0;
 			menuy=(menuy-scount*50);
+		}
+		if(chind==1){
+			chind=0;
+			strcpy(inds, "");
+    		sprintf(inds, "%d", index+1);
+			strcat(inds, "/cover.png");
+			changeImg(inds);
 		}
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_SceneBegin(top);

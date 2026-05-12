@@ -64,7 +64,8 @@ const u32 clamp(u32 n, u32 lower, u32 upper) {
         }
     }
 
- 
+    imgwidt=width;
+    imgheit=height;
     *subtex = (Tex3DS_SubTexture){
         .width  = clamp(next_pow2(width), 64, 1024),
         .height = clamp(next_pow2(height), 64, 1024),
