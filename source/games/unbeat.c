@@ -31,7 +31,7 @@ void rgDrawBottom(){
     C2D_DrawCircleSolid(160, 120, 1, 75, YAOL);
     C2D_DrawCircleSolid(160, 120, 1, 55, white);
 		C2D_DrawRectangle(
-			0, 240-(250*anims[0]), 1, 
+			0, 0, 1, 
 			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
     C3D_FrameEnd(0);
 }
@@ -53,7 +53,7 @@ void rgDrawTop(){
 		C2D_DrawImageAt(RG_SIL_SINGLE, 50, 120, 0.5f, NULL,-1,1);
     C2D_DrawCircleSolid(200, beatposy, 0, 20, white);
 		C2D_DrawRectangle(
-			0, 0, 1, 
+			0, 240-(250*anims[0]), 1, 
 			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
     C3D_FrameEnd(0);
 }

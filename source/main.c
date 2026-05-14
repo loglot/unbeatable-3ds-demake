@@ -191,6 +191,29 @@ void FreeCitro2DImage(C2D_Image* image) {
 			animation=(animation*3)/4.0;
 		}
 	}
+	void warnTick(){
+		u32 kDown = hidKeysDown();
+		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {states[0]=0;states[1]=1;}
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);	
+        C2D_SceneBegin(top);
+        C2D_TargetClear(top, YAOL);
+			betterText("This is an Unofficial Fan Project",0,20, 30,.7,.9,.9,white);
+			betterText("Unbeatable 3DS is UNAFILIATED with DCELL Games",0,30, 220,.7,.5,.5,white);
+		C2D_DrawRectangle(
+			0, 0, 1, 
+			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
+        C3D_FrameEnd(0);
+
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);	
+        C2D_SceneBegin(bottom);
+        C2D_TargetClear(bottom, YAOL);
+			betterText("Press A To Start",0,55, 100,.7,1,1,white);
+		C2D_DrawRectangle(
+			0, 240-(250*anims[0]), 1, 
+			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
+        C3D_FrameEnd(0);
+
+	}
 	void tick(){
 
     	// hidScanInput();			
@@ -276,7 +299,9 @@ while (aptMainLoop())
 			}
 	        itick();
 		}else if (state==1){
-			rgTick();
+			rgTick(); 
+		}else if (state==2){
+			warnTick();
 		} 
 		if (states[1]==1){
 			anims[0]=(anims[0]*7+1.05)/8;
