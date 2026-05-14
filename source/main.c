@@ -181,7 +181,7 @@ void FreeCitro2DImage(C2D_Image* image) {
         C3D_FrameEnd(0);
 	}
 	void draw(){
-		// drawBottom();
+		drawBottom();
 		drawTop();
 	}
 	void itick(){
