@@ -10,4 +10,5 @@ C2D_Prepare();
 fsInit();
 romfsInit();
     ndspInit();
-	csndInit();
+	cwavUseEnvironment(CWAV_ENV_DSP);
+	// gfxSet3D(true);

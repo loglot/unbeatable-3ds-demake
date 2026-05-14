@@ -7,6 +7,7 @@
 #include <c3d/texture.h>
 #include <stdlib.h>
 #include <c2d/base.h>
+#include "cwav.h"
 
 // #define STB_IMAGE_IMPLEMENTATION
 // #include "stb_image.h"

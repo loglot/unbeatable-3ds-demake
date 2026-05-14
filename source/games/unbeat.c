@@ -9,8 +9,11 @@
 srand(time(NULL));
 int beatposy=140;
 int beatvely=0;
-
+CWAV* RG_Hit_SND= (CWAV*)malloc(sizeof(CWAV));
+cwavFileLoad(RG_Hit_SND, "romfs:/hit.bcwav", 5);
 C2D_Image RG_SIL_SINGLE ;//= //{ {tex, NULL}, {0, 0, imgwid, imghei} };
+char stat[5];
+// sprintf(stat, "%d",Hit->loadStatus);
 loadPngImage(&RG_SIL_SINGLE, "romfs:/img/silence.png");
 void rgDrawBottom(){
     
@@ -37,6 +40,8 @@ void rgDrawTop(){
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     C2D_SceneBegin(top);
     C2D_TargetClear(top, YAOL);
+			// betterText(stat,0,0, 50,.7,.4,.5,offwhite);
+    
     // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
     C2D_DrawCircleSolid(150, 70, 0, 15, white);
     C2D_DrawCircleSolid(150, 140, 0, 15, white);
@@ -47,11 +52,26 @@ void rgDrawTop(){
 		C2D_DrawImageAt(RG_SIL_SINGLE, 50, 50, 0.5f, NULL,-1,1);
 		C2D_DrawImageAt(RG_SIL_SINGLE, 50, 120, 0.5f, NULL,-1,1);
     C2D_DrawCircleSolid(200, beatposy, 0, 20, white);
+		C2D_DrawRectangle(
+			0, 0, 1, 
+			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
+    C3D_FrameEnd(0);
+}
+
+
+
+void rgTick() {
+    rgDrawBottom();
+    rgDrawTop();
 	u32 kDown = hidKeysDown();
+		if (kDown & KEY_START){
+            states[0]=0;states[1]=1;
+		}
 	if (kDown & (KEY_A | KEY_B | KEY_X | KEY_Y | KEY_R)) 
     {
         beatposy=80;
         beatvely=-5;
+        cwavPlay(RG_Hit_SND, 0, 0);
     }
     else{ 
         if (beatposy<140){
@@ -65,16 +85,6 @@ void rgDrawTop(){
     {
         beatposy=140;
         // beatvely=-5;
+        cwavPlay(RG_Hit_SND, 0, 0);
     }
-		C2D_DrawRectangle(
-			0, 0, 1, 
-			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
-    C3D_FrameEnd(0);
-}
-
-
-
-void rgTick() {
-    rgDrawBottom();
-    rgDrawTop();
 }

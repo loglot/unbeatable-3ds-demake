@@ -50,3 +50,9 @@ struct song songs[50];
     char indexs[15];
 
 char inds [50];
+
+CWAV* MENU_UP= (CWAV*)malloc(sizeof(CWAV));
+cwavFileLoad(MENU_UP, "romfs:/selectUp.bcwav", 5);
+
+CWAV* MENU_DOWN= (CWAV*)malloc(sizeof(CWAV));
+cwavFileLoad(MENU_DOWN, "romfs:/selectDown.bcwav", 5);

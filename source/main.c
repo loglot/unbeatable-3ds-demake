@@ -205,11 +205,13 @@ void FreeCitro2DImage(C2D_Image* image) {
 		if (kDown & KEY_DUP  )  {
 			index--;
 			chind=1;
+        cwavPlay(MENU_UP, 0, 0);
 
 		}
 		if (kDown & KEY_DDOWN ) {
 			index++;
 			chind=1;
+        cwavPlay(MENU_DOWN, 0, 0);
 		}
 		
 		if (index<0){
@@ -264,10 +266,6 @@ while (aptMainLoop())
 				indexes[1]++;
 				anims[2]+=400;
 			}
-		}
-		if (kDown & KEY_START){
-			animation=0;
-			state=1;
 		}
 		if(state==9) break;
 		if(state==0){

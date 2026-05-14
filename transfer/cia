@@ -1,0 +1,10 @@
+echo making...
+make -Wnostringop-overflow
+echo building cia
+./build.sh
+echo mounting /dev/sda1 to /mnt/1
+sudo mount /dev/sda1 /mnt/1
+echo copying ./UNBEATABLE.cia to /mnt/1/_cias
+sudo cp ./UNBEATABLE.cia /mnt/1/_cias
+echo unmounting /mnt/1
+sudo umount /mnt/1
