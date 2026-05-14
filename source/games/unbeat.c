@@ -27,6 +27,9 @@ void rgDrawBottom(){
 			500,  130, quaverblue,quaverblue,quaverblue,quaverblue);
     C2D_DrawCircleSolid(160, 120, 1, 75, YAOL);
     C2D_DrawCircleSolid(160, 120, 1, 55, white);
+		C2D_DrawRectangle(
+			0, 240-(250*anims[0]), 1, 
+			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
     C3D_FrameEnd(0);
 }
 void rgDrawTop(){
@@ -45,7 +48,7 @@ void rgDrawTop(){
 		C2D_DrawImageAt(RG_SIL_SINGLE, 50, 120, 0.5f, NULL,-1,1);
     C2D_DrawCircleSolid(200, beatposy, 0, 20, white);
 	u32 kDown = hidKeysDown();
-	if (kDown & (KEY_A | KEY_B | KEY_X | KEY_Y)) 
+	if (kDown & (KEY_A | KEY_B | KEY_X | KEY_Y | KEY_R)) 
     {
         beatposy=80;
         beatvely=-5;
@@ -58,11 +61,14 @@ void rgDrawTop(){
             beatposy=140;
         }
     }
-	if (kDown & (KEY_LEFT | KEY_RIGHT | KEY_DOWN | KEY_UP)) 
+	if (kDown & (KEY_LEFT | KEY_RIGHT | KEY_DOWN | KEY_UP | KEY_L)) 
     {
         beatposy=140;
         // beatvely=-5;
     }
+		C2D_DrawRectangle(
+			0, 0, 1, 
+			5000,  (250*anims[0]),supportcolor, supportcolor,supportcolor,supportcolor);
     C3D_FrameEnd(0);
 }
 

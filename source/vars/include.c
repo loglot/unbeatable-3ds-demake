@@ -8,3 +8,4 @@
 #include "../vars/multimedia/img.c"
 #include "../vars/multimedia/audio.c"
 #include "../games/unbeat.c"
+#include "../games/info.c"
