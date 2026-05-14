@@ -58,10 +58,15 @@ void drawInfo(int info,int page){
     float x=anims[2];
     float y=300-(300*animation);
     if (info==0){
-                // RenderInfo(AlbumINF,x,y,page);
         AlbumINF(x,y,page);
         AlbumINF(x-400,y,page-1);
         AlbumINF(x+400,y,page+1);
+
+    }
+    if (info==1){
+        MiscINF(x,y,page);
+        MiscINF(x-400,y,page-1);
+        MiscINF(x+400,y,page+1);
 
     }
 }
