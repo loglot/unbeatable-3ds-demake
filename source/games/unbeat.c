@@ -12,6 +12,7 @@ int beatvely=0;
 CWAV* RG_Hit_SND= (CWAV*)malloc(sizeof(CWAV));
 cwavFileLoad(RG_Hit_SND, "romfs:/hit.bcwav", 5);
 C2D_Image RG_SIL_SINGLE ;//= //{ {tex, NULL}, {0, 0, imgwid, imghei} };
+int RG_TICK;
 char stat[5];
 // sprintf(stat, "%d",Hit->loadStatus);
 loadPngImage(&RG_SIL_SINGLE, "romfs:/img/silence.png");
@@ -47,6 +48,21 @@ void rgDrawTop(){
     sprintf(stat, "%d", RG_MAP.count);
     strcat(stat, " elements");
     betterText(stat,0,0, 50,.7,.4,.5,offwhite);
+    if (RG_TICK>=RG_MAP.count){
+        RG_TICK=0;
+    }
+    strcpy(stat, "Type : ");
+    char s[10];
+    sprintf(s, "%d", RG_MAP.beats[RG_TICK].type);
+    strcat(stat, s);
+    betterText(stat,0,0, 70,.7,.4,.5,offwhite);
+
+    strcpy(stat, "Time : ");
+    // char s[10];
+    sprintf(s, "%d", RG_MAP.beats[RG_TICK].time);
+    strcat(stat, s);
+    betterText(stat,0,0, 90,.7,.4,.5,offwhite);
+    RG_TICK++;
     
     // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
     C2D_DrawCircleSolid(150, 70, 0, 15, white);
@@ -72,6 +88,7 @@ void rgTick() {
 	u32 kDown = hidKeysDown();
 		if (kDown & KEY_START){
             states[0]=0;states[1]=1;
+            free(&RG_MAP);
 		}
 	if (kDown & (KEY_A | KEY_B | KEY_X | KEY_Y | KEY_R)) 
     {

@@ -93,8 +93,7 @@ struct song parseSong(char *songPath){
     sprintf(indexs, "%d", index);
     return (parsing);
 }
-struct beatmap parseBeats(char *songPath){
-    struct beatmap parsing;
+void parseBeats(struct beatmap* parsing, char *songPath){
     FILE *file = fopen(songPath, "r");
     int buf_size = 0;
     int buf_used = 0;
@@ -110,32 +109,38 @@ struct beatmap parseBeats(char *songPath){
                 strcpy(mode,"Hit");
             }
         }else if(strcmp(mode,"Hit")==0){
-            struct beat *tmp;
             if (i == buf_size) {
+                struct beat *tmp;
                 //need more space in the array
 
-                buf_size += 20;
-                tmp = realloc(parsing.beats, buf_size); // get a new larger array
+                buf_size += 1000;
+                tmp = realloc(parsing->beats, buf_size); // get a new larger array
                 // if (!tmp) fatal_error();
-
-                parsing.beats = tmp;
+                parsing->beats = tmp;
+                // free(&tmp);
             }
 
 
-            char* split=strtok(line,",");
-            strtok(NULL,",");
-            strtok(NULL,",");
-            char* tmp2=split;
-            int num1;
-            sscanf(split, "%d", &num1);
+            if(i<2000){
+                char* split=strtok(line,",");
+                char* tmp2=split;
+                int num1;
+                sscanf(split, "%d", &num1);
+                parsing->beats[i].type=num1;
+                split=strtok(NULL,",");
+                split=strtok(NULL,",");
+                sscanf(split, "%d", &num1);
+                parsing->beats[i].time=num1;
 
-            strtok(NULL,",");
-            i=i+1;
+                // strtok(NULL,",");
+                i=i+1;
+
+            }
         }
         
     }
-    parsing.count=i;
-    return parsing;
+    parsing->count=i;
+    // free(&parsing);
 }
 
 

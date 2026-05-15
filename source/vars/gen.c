@@ -45,8 +45,8 @@ struct beatmap {
 	int count;
 };
 struct beat {
-	float time;
-	float type;
+	int time;
+	int type;
 };
 struct song songs[50];
     char indexs[15];
