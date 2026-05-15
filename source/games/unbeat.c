@@ -15,6 +15,9 @@ C2D_Image RG_SIL_SINGLE ;//= //{ {tex, NULL}, {0, 0, imgwid, imghei} };
 char stat[5];
 // sprintf(stat, "%d",Hit->loadStatus);
 loadPngImage(&RG_SIL_SINGLE, "romfs:/img/silence.png");
+
+struct beatmap RG_MAP;
+
 void rgDrawBottom(){
     
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -40,7 +43,10 @@ void rgDrawTop(){
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     C2D_SceneBegin(top);
     C2D_TargetClear(top, YAOL);
-			// betterText(stat,0,0, 50,.7,.4,.5,offwhite);
+	
+    sprintf(stat, "%d", RG_MAP.count);
+    strcat(stat, " elements");
+    betterText(stat,0,0, 50,.7,.4,.5,offwhite);
     
     // C2D_DrawRectSolid(30, 30, 0, 260, 180, UI);
     C2D_DrawCircleSolid(150, 70, 0, 15, white);

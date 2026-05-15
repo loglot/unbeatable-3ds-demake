@@ -222,7 +222,12 @@ void FreeCitro2DImage(C2D_Image* image) {
 
 		
 		u32 kDown = hidKeysDown();
-		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {states[0]=1;states[1]=1;}
+		if (kDown & KEY_A/*||(touch.px>50&&touch.py>130&&touch.px<50+220&&touch.py<130+60)*/) {
+			states[0]=1;
+			states[1]=1;
+			RG_MAP=parseBeats(songs[index].path);
+		}
+
 		
 
 		if (kDown & KEY_DUP  )  {

@@ -42,6 +42,7 @@ struct song {
 };
 struct beatmap {
 	struct beat* beats;
+	int count;
 };
 struct beat {
 	float time;
